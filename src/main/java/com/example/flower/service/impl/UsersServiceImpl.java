@@ -12,7 +12,9 @@ import com.example.flower.enums.HttpStatusEnum;
 import com.example.flower.po.Users;
 import com.example.flower.service.UsersService;
 import com.example.flower.util.StringUtil;
+import com.example.flower.util.TokenUtils;
 import com.example.flower.vo.RE;
+import com.example.flower.vo.userVO;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ import javax.annotation.Resource;
 @Service
 @Transactional
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements UsersService{
+
+    @Resource
+    private TokenUtils tokenUtils;
 
     @Resource
     @Autowired
@@ -149,16 +154,19 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
         // 获取加密盐
         String salt = users.getSalt();
-        // 重新设置条件 select id from users where email = #{email} and password #{password} limit 1
+        // 重新设置条件 select id,email,password,role from users where email = #{email} and password #{password} limit 1
         QueryWrapper<Users> wrapper2 = new QueryWrapper<>();
-        wrapper2.select("id");
+        wrapper2.select("id","email","password","role");
         wrapper2.eq("email", email);
         wrapper2.eq("password", DigestUtils.md5Hex(password + salt));
         wrapper2.last("limit 1");
         // 查询用户
         users = this.baseMapper.selectOne(wrapper2);
-
-        return users == null ? RE.error(HttpStatusEnum.PASSWORD_ERROR) : RE.ok().data("id", users.getId());
+        Users users1= new Users();
+        userVO uv= usersMapper.selectByEmail(email);
+        users1.setEmail(uv.getEmail());
+        users1.setRole(uv.getRole());
+        return users == null ? RE.error(HttpStatusEnum.PASSWORD_ERROR) : RE.ok().data("token",tokenUtils.createToken(users1));
     }
 
     /**
@@ -186,7 +194,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
         // 构件条件对象 select id from users where email = #{email} limit 1
         QueryWrapper<Users> wrapper = new QueryWrapper<>();
-        wrapper.select("id");
+        wrapper.select("id","email","role");
         wrapper.eq("email", email);
         wrapper.last("limit 1");
 
@@ -207,7 +215,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         // 删除验证码
         redisTemplate.delete(RedisConstant.EMAIL + email);
 
-        return RE.ok().data("id", users.getId());
+        return RE.ok().data("token",tokenUtils.createToken(users));
     }
 
     /**

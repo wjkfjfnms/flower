@@ -53,8 +53,8 @@ public class RegisterDTO {
     /**
      * 身份（1：商家  2：租户）
      */
-    @ApiModelProperty(value="身份（1：商家  2：租户）", dataType = "String", required = true)
-    @Schema(example = "1")
+    @ApiModelProperty(value="身份（ADMIN/USER/MERCHANTS）", dataType = "String", required = true)
+    @Schema(example = "ADMIN")
     private String role;
 
 }

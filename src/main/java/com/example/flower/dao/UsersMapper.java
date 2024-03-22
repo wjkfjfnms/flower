@@ -3,6 +3,7 @@ package com.example.flower.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.flower.dto.RegisterDTO;
 import com.example.flower.po.Users;
+import com.example.flower.vo.userVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,13 @@ public interface UsersMapper extends BaseMapper<Users> {
      * @return insert id
      */
     int insert(RegisterDTO registerDTO);
+
+    /**
+     * select by email
+     * @param email
+     * @return userVO(id,email,password,role)
+     */
+    userVO selectByEmail(String email);
 
     /**
      * insert record to table selective
