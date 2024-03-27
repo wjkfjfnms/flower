@@ -32,7 +32,8 @@ public class CommonServiceImpl implements CommonService {
         }
 
         // JSON转换，提取email的值
-        String email = JSON.parseObject(emailJson).getString("email").trim();
+        String email = emailJson;
+//        String email = JSON.parseObject(emailJson).getString("email").trim();
         // 邮箱校验
         if (!StringUtil.checkEmail(email)) {
             return RE.error(HttpStatusEnum.EMAIL_ERROR);

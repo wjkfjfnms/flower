@@ -5,8 +5,9 @@ spring:
     active: dev
   redis:
     port: 6379
-    host: localhost
-    password: 123456
+    host: 122.152.236.82
+    password: null
+#    password: 123456
   # 时间格式转换
   jackson:
     time-zone: GMT+8
