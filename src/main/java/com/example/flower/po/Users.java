@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,7 +16,9 @@ import java.util.Date;
 @ApiModel(value="com-example-user-po-Users")
 @Data
 @TableName("users")
-public class Users {
+public class Users implements Serializable {
+    private static final long serialVersionUID = 4522943071576672084L;
+
     /**
     * 主键
     */
@@ -29,11 +32,6 @@ public class Users {
     @ApiModelProperty(value="用户账号(邮箱)")
     private String email;
 
-    /**
-    * 用户姓名
-    */
-    @ApiModelProperty(value="用户姓名")
-    private String name;
 
     /**
     * 密码
@@ -75,6 +73,12 @@ public class Users {
     /**
      * 身份
      */
-    @ApiModelProperty(value="身份")
+    @ApiModelProperty(value="身份（ADMIN/USER）")
     private String role;
+
+    /**
+     * 昵称（10个字以内)
+     */
+    @ApiModelProperty(value="昵称（10个字以内)")
+    private String nickname;
 }

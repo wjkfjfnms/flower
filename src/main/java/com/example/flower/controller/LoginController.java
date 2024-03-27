@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/api/user")
 @Api(tags = {"登录注册接口"})
 public class LoginController {
 
