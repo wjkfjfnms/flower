@@ -1,6 +1,7 @@
 package com.example.flower.service;
 
 import com.example.flower.dto.GetEmailCodeDTO;
+import com.example.flower.po.Users;
 import com.example.flower.vo.RE;
 
 public interface CommonService {
@@ -18,5 +19,19 @@ public interface CommonService {
      * @return
      */
     RE sendEmailCode(GetEmailCodeDTO getEmailCodeDTO);
+
+    /**
+     * 根据token里的邮箱获取昵称
+     * @param
+     * @return nickname
+     */
+    String getTokenNickname();
+
+    /**
+     * 根据token里的邮箱获取用户信息
+     * @param
+     * @return id, email, password, sex, phone, touxiang, createtime, role ,nickname
+     */
+    Users getUsersDetails();
 }
 

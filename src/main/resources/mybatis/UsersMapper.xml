@@ -6,9 +6,8 @@
     <!--@Table users-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="salt" jdbcType="VARCHAR" property="salt" />
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="touxiang" jdbcType="VARCHAR" property="touxiang" />
@@ -17,7 +16,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `email`, `name`, `password`, `salt`, sex, phone, touxiang, createtime, role
+    id, `email`, `nickname`, `password`, sex, phone, touxiang, createtime, role
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -35,9 +34,25 @@
 
 <!--  注册-->
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.flower.dto.RegisterDTO" useGeneratedKeys="true">
-    insert into users (`email`,  `password`, `salt`,`role`)
-    values (#{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}, #{salt,jdbcType=CHAR},#{role,jdbcType=VARCHAR})
+    insert into users (`email`,  `password`, `salt`,`role`,`state`)
+    values (#{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}, #{salt,jdbcType=CHAR},#{role,jdbcType=VARCHAR},#{state,javaType=int})
   </insert>
+
+  <!--  根据邮箱查询信息-->
+  <select id="selectByEmail" parameterType="string" resultType="com.example.flower.vo.userVO">
+    select id,email,password,role,nickname
+    from users
+    where email=#{email} and state = 0
+  </select>
+
+  <!--  根据邮箱获取用户信息-->
+  <select id="selectDetailsByEmail" parameterType="string" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from users
+    where email = #{email,jdbcType=VARCHAR} and state = 0
+  </select>
 
 
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Users" useGeneratedKeys="true">
@@ -47,8 +62,8 @@
       <if test="email != null">
         `email`,
       </if>
-      <if test="name != null">
-        `name`,
+      <if test="nickname != null">
+        `nickname`,
       </if>
       <if test="password != null">
         `password`,
@@ -70,8 +85,8 @@
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
@@ -97,8 +112,8 @@
       <if test="email != null">
         `email` = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
+      <if test="nickname != null">
+        `nickname` = #{nickname,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         `password` = #{password,jdbcType=VARCHAR},
@@ -122,7 +137,7 @@
     <!--@mbg.generated-->
     update users
     set `email` = #{email,jdbcType=VARCHAR},
-      `name` = #{name,jdbcType=VARCHAR},
+      `nickname` = #{nickname,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},

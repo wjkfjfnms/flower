@@ -2,14 +2,20 @@ package com.example.flower.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.example.flower.constant.RedisConstant;
+import com.example.flower.dao.UsersMapper;
 import com.example.flower.dto.GetEmailCodeDTO;
 import com.example.flower.enums.HttpStatusEnum;
+import com.example.flower.po.Users;
 import com.example.flower.service.CommonService;
 import com.example.flower.util.StringUtil;
 import com.example.flower.vo.RE;
+import com.example.flower.vo.userVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -23,6 +29,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Autowired
     private ThreadService threadService;
+
+    @Autowired
+    UsersMapper usersMapper;
 
     @Override
     public RE getRequestPermissionCode(String emailJson) {
@@ -88,6 +97,52 @@ public class CommonServiceImpl implements CommonService {
         // 丢入缓存，设置5分钟过期
         redisTemplate.opsForValue().set(RedisConstant.EMAIL + email, code, RedisConstant.EXPIRE_FIVE_MINUTE, TimeUnit.SECONDS);
         return RE.ok();
+    }
+
+    @Override
+    public String getTokenNickname() {
+        // 获取当前的认证信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        userVO user = null;
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String email = userDetails.getUsername();
+            user = usersMapper.selectByEmail(email);
+            System.out.println("当前用户ID: " + user.getId());
+            System.out.println("当前用户昵称: " + user.getNickname());
+        } else {
+            System.out.println("当前认证信息为空");
+        }
+        return user.getNickname();
+    }
+
+    @Override
+    public Users getUsersDetails() {
+        // 获取当前的认证信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users users = null;
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            System.out.println("authentication:" + authentication);
+            UserDetails userDetails = null;
+            try {
+                userDetails = (UserDetails) authentication.getPrincipal();
+            } catch (ClassCastException e) {
+                // 处理类型转换异常
+                e.printStackTrace();
+            }
+            String email = userDetails.getUsername();
+            if (email!=null){
+                // 获取当前用户的用户名
+                users = usersMapper.selectDetailsByEmail(email);
+            }else {
+                System.out.println("获取当前登录用户的账号失败");
+            }
+
+        } else {
+            System.out.println("当前认证信息为空");
+        }
+        return users;
     }
 }
 

@@ -65,6 +65,12 @@ public class LoginController {
         return commonService.sendEmailCode(getEmailCodeDTO);
     }
 
+    @ApiOperation(value = "获取当前登录用户的信息接口")
+    @PostMapping("code/getUsersDetails")
+    public RE getUsersDetails(){
+        return RE.ok().data("Users",commonService.getUsersDetails());
+    }
+
     //    /** 这是管理员用户才可以看到 */
 //    @PostMapping(value = "/admin")
 //    @PreAuthorize("hasRole('ADMIN')")
