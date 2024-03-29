@@ -58,7 +58,7 @@ spring:
     # 支付成功的重定向与接口回调 跳转至支付成功页面
     #跳前端支付完成页面
     returnUrl: http://localhost:8081/#/index
-    notifyUrl: http://ze4iye.natappfree.cc/notify
+    notifyUrl: http://95scdh.natappfree.cc/notify
 
 
 #app:
