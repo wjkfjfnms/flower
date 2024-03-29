@@ -5,12 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.flower.constant.RedisConstant;
+import com.example.flower.dao.RealinfoMapper;
 import com.example.flower.dao.UsersMapper;
-import com.example.flower.dto.CodeLoginDTO;
-import com.example.flower.dto.GetEmailCodeDTO;
-import com.example.flower.dto.PasswordLoginDTO;
-import com.example.flower.dto.RegisterDTO;
+import com.example.flower.dto.*;
 import com.example.flower.enums.HttpStatusEnum;
+import com.example.flower.po.AddUserPO;
+import com.example.flower.po.Realinfo;
 import com.example.flower.po.Users;
 import com.example.flower.service.UsersService;
 import com.example.flower.util.PageResultS;
@@ -18,7 +18,6 @@ import com.example.flower.util.StringUtil;
 import com.example.flower.util.TokenUtils;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
-import com.example.flower.vo.UsersUpdateVO;
 import com.example.flower.vo.userVO;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +43,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    private RealinfoMapper realinfoMapper;
 
     @Override
     public int deleteByPrimaryKey(Long id) {
@@ -308,11 +310,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 //            查询全部
             // 创建 Page 对象，指定当前页和每页显示数量
             Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-            IPage<Users> queryResult =usersMapper.selectAllUser(page, pagePara);
+            IPage<userVO> queryResult =usersMapper.selectAllUser(page, pagePara);
             // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
             PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
             // 构建 PageResultS 对象，设置查询结果列表和分页信息
-            PageResultS<Users> result = new PageResultS<>();
+            PageResultS<userVO> result = new PageResultS<>();
             result.setList(queryResult.getRecords());
             result.setPage(pageResult);
             if (result !=null){
@@ -324,8 +326,49 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
-    public int insertSelective(Users record) {
-        return usersMapper.insertSelective(record);
+    public RE addUser(AddUserDTO addUserDTO) {
+//        获取参数
+        AddUserPO addUserPO=new AddUserPO();
+        addUserPO.setEmail(addUserDTO.getEmail());
+        addUserPO.setPhone(addUserDTO.getPhone());
+        addUserPO.setSex(addUserDTO.getSex());
+        addUserPO.setRole(addUserDTO.getRole());
+
+        if (StringUtils.isAnyBlank(addUserPO.getEmail(), addUserDTO.getPassword())) {
+            // 非空
+            return RE.error(HttpStatusEnum.PARAM_ILLEGAL);
+        }else if (!StringUtil.checkEmail(addUserPO.getEmail())) {
+            // 邮箱格式校验
+            return RE.error(HttpStatusEnum.EMAIL_ERROR);
+        }else if (!StringUtil.checkPassword(addUserDTO.getPassword())) {
+            // 密码格式和验证码长度校验
+            return RE.error(HttpStatusEnum.PARAM_ILLEGAL);
+        }
+        // 获取加密盐
+        String salt = StringUtil.randomEncryptedSalt();
+        // 密码加密（原明文密码 + 随机加密盐） md5加密
+        addUserPO.setPassword(DigestUtils.md5Hex(addUserDTO.getPassword() + salt));
+        addUserPO.setSalt(salt);
+        addUserPO.setState(0);
+//            在users表添加用户,返回主键
+        int id=usersMapper.addUser(addUserPO);
+        if (id != 0){
+            //        获取参数
+            Realinfo realinfo = new Realinfo();
+            realinfo.setUserid(addUserPO.getId());
+            realinfo.setRealname(addUserDTO.getRealname());
+            realinfo.setIdentitycardnum(addUserDTO.getIdentitycardnum());
+
+            //        在realinfo表添加用户信息，返回主键
+            int realinfoId = realinfoMapper.AddUser(realinfo);
+            if (realinfoId != 0){
+                return RE.ok().data("id",addUserPO.getId());
+            }else {
+                return RE.error().message("realinfo表添加失败！");
+            }
+        }else {
+            return RE.error().message("添加员工失败！");
+        }
     }
 
     @Override

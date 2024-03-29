@@ -8,13 +8,13 @@ import lombok.Data;
 @Data
 public class Realinfo {
     @ApiModelProperty(value="")
-    private Integer id;
+    private Long id;
 
     /**
     * 该认证信息所属的用户id
     */
     @ApiModelProperty(value="该认证信息所属的用户id")
-    private Integer userid;
+    private Long userid;
 
     /**
     * 真实姓名

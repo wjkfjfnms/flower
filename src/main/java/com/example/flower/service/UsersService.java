@@ -1,14 +1,11 @@
 package com.example.flower.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.flower.dto.CodeLoginDTO;
-import com.example.flower.dto.GetEmailCodeDTO;
-import com.example.flower.dto.PasswordLoginDTO;
-import com.example.flower.dto.RegisterDTO;
+import com.example.flower.dto.*;
+import com.example.flower.po.AddUserPO;
 import com.example.flower.po.Users;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
-import com.example.flower.vo.UsersUpdateVO;
 
 public interface UsersService extends IService<Users>{
 
@@ -46,7 +43,12 @@ public interface UsersService extends IService<Users>{
      */
     RE selectAllUser(String name,PagePara pagePara);
 
-    int insertSelective(Users record);
+    /**
+     * 添加员工
+     * @param addUserDTO
+     * @return
+     */
+    RE addUser(AddUserDTO addUserDTO);
 
     Users selectByPrimaryKey(Long id);
 

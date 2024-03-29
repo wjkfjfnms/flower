@@ -21,10 +21,10 @@ public interface RealinfoMapper {
 
     /**
      * insert record to table selective
-     * @param record the record
+     * @param realinfo the record
      * @return insert count
      */
-    int insertSelective(Realinfo record);
+    int AddUser(Realinfo realinfo);
 
     /**
      * select by primary key

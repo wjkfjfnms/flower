@@ -1,7 +1,8 @@
-package com.example.flower.vo;
+package com.example.flower.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.example.flower.vo.RealinfoVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

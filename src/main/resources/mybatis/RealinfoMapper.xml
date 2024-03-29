@@ -17,7 +17,7 @@
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
+    select
     <include refid="Base_Column_List" />
     from realinfo
     where id = #{id,jdbcType=INTEGER}
@@ -29,57 +29,52 @@
   </delete>
   <insert id="insert" parameterType="com.example.flower.po.Realinfo">
     <!--@mbg.generated-->
-    insert into realinfo (id, userId, realname, 
+    insert into realinfo (id, userId, realname,
       identityCardnum, cardfront, cardback
       )
-    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR},
       #{identitycardnum,jdbcType=VARCHAR}, #{cardfront,jdbcType=VARCHAR}, #{cardback,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.example.flower.po.Realinfo">
+
+
+
+<!--  添加员工-->
+  <insert id="AddUser" parameterType="com.example.flower.po.Realinfo" useGeneratedKeys="true" keyProperty="id">
     <!--@mbg.generated-->
     insert into realinfo
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+      <if test="id != null and id != ''">
         id,
       </if>
-      <if test="userid != null">
+      <if test="userid != null and userid != ''">
         userId,
       </if>
-      <if test="realname != null">
+      <if test="realname != null and realname != ''">
         realname,
       </if>
-      <if test="identitycardnum != null">
+      <if test="identitycardnum != null and identitycardnum != ''">
         identityCardnum,
-      </if>
-      <if test="cardfront != null">
-        cardfront,
-      </if>
-      <if test="cardback != null">
-        cardback,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+      <if test="id != null and id != ''">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="userid != null">
+      <if test="userid != null and userid != ''">
         #{userid,jdbcType=INTEGER},
       </if>
-      <if test="realname != null">
+      <if test="realname != null and realname != ''">
         #{realname,jdbcType=VARCHAR},
       </if>
-      <if test="identitycardnum != null">
+      <if test="identitycardnum != null and identitycardnum != ''">
         #{identitycardnum,jdbcType=VARCHAR},
-      </if>
-      <if test="cardfront != null">
-        #{cardfront,jdbcType=VARCHAR},
-      </if>
-      <if test="cardback != null">
-        #{cardback,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
+
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.example.flower.po.Realinfo">
     <!--@mbg.generated-->
     update realinfo

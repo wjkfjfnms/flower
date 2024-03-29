@@ -1,9 +1,10 @@
 package com.example.flower.controller;
 
+import com.example.flower.dto.AddUserDTO;
 import com.example.flower.service.UsersService;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
-import com.example.flower.vo.UsersUpdateVO;
+import com.example.flower.dto.UsersUpdateVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -38,5 +39,11 @@ public class UsersManageController {
     @PostMapping("/logoutByPrimaryKey")
     public RE logoutByPrimaryKey(Integer id){
         return usersService.logoutByPrimaryKey(id);
+    }
+
+    @ApiOperation(value = "添加员工")
+    @PostMapping("/addUser")
+    public RE addUser(@Validated @RequestBody AddUserDTO addUserDTO){
+        return usersService.addUser(addUserDTO);
     }
 }

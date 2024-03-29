@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.flower.dto.RegisterDTO;
+import com.example.flower.po.AddUserPO;
 import com.example.flower.po.Users;
 import com.example.flower.vo.PagePara;
-import com.example.flower.vo.UsersUpdateVO;
+import com.example.flower.dto.UsersUpdateVO;
 import com.example.flower.vo.userVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
@@ -20,7 +21,7 @@ public interface UsersMapper extends BaseMapper<Users> {
      * 查询全部员工信息
      * @return
      */
-    IPage<Users> selectAllUser(Page<PagePara> page, @Param("par")PagePara pagePara);
+    IPage<userVO> selectAllUser(Page<PagePara> page, @Param("par")PagePara pagePara);
 
     /**
      * 根据昵称查询某个用户信息
@@ -58,11 +59,11 @@ public interface UsersMapper extends BaseMapper<Users> {
     Users selectDetailsByEmail(String email);
 
     /**
-     * insert record to table selective
-     * @param record the record
+     * 添加员工
+     * @param addUserPO the record
      * @return insert count
      */
-    int insertSelective(Users record);
+    int addUser(AddUserPO addUserPO);
 
     /**
      * select by primary key
