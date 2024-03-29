@@ -59,11 +59,11 @@
     id, nickname,  sex, phone, state, createtime, role
   </sql>
 
-  <resultMap id="selectAllUserMap" type="com.example.flower.po.Users">
+  <resultMap id="selectAllUserMap" type="com.example.flower.vo.userVO">
     <!--@mbg.generated-->
     <!--@Table users-->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
@@ -72,16 +72,17 @@
   </resultMap>
 <!--  查询全部用户信息-->
   <select id="selectAllUser" resultMap="selectAllUserMap">
-    select
-    <include refid="selectAllUserList" />
-    from users
+    select u.id, r.realname, u.sex, u.phone, u.state, u.createtime, u.role
+    from users u
+    inner join realinfo r on u.id = r.userId
   </select>
 
-<!--根据昵称查询用户-->
-  <select id="selectByNickname" resultMap="selectAllUserMap" parameterType="string">
-    select id, nickname,  sex, phone, state, createtime, role
-    from users
-    where nickname = #{name,jdbcType=VARCHAR}
+<!--根据姓名查询用户-->
+  <select id="selectByname" resultMap="selectAllUserMap" parameterType="string">
+    select u.id, r.realname, u.sex, u.phone, u.state, u.createtime, u.role
+    from users u
+    inner join realinfo r on u.id = r.userId
+    where r.realname = #{name,jdbcType=VARCHAR}
   </select>
 
 
@@ -169,22 +170,23 @@
   <!--  修改用户信息-->
   <update id="updateByPrimaryKey" parameterType="com.example.flower.vo.UsersUpdateVO">
     <!--@mbg.generated-->
-    update users
+    update realinfo r
+    inner join users u on r.userId = u.id
     <set>
-      <if test="nickname != null and nickname != ''">
-        `nickname` = #{nickname,jdbcType=VARCHAR},
+      <if test="realinfo.realname != null and realinfo.realname != ''">
+        r.realname = #{realinfo.realname,jdbcType=VARCHAR},
       </if>
       <if test="sex != null and sex != ''">
-        sex = #{sex,jdbcType=VARCHAR},
+        u.sex = #{sex,jdbcType=VARCHAR},
       </if>
       <if test="phone != null and phone != ''">
-        phone = #{phone,jdbcType=VARCHAR},
+        u.phone = #{phone,jdbcType=VARCHAR},
       </if>
       <if test="role != null and role != ''">
-        role = #{role,jdbcType=VARCHAR},
+        u.role = #{role,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where r.userId = #{id,jdbcType=BIGINT}
   </update>
 
 <!--  注销账户-->

@@ -19,6 +19,7 @@ import com.example.flower.util.TokenUtils;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
 import com.example.flower.vo.UsersUpdateVO;
+import com.example.flower.vo.userVO;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -297,9 +298,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     public RE selectAllUser(String name, PagePara pagePara) {
         if (name != null && !name.equals("")){
 //            查询某个人
-           Users users= usersMapper.selectByNickname(name);
-           if (users!=null){
-               return RE.ok().data("user",users);
+            userVO uservo= usersMapper.selectByname(name);
+           if (uservo!=null){
+               return RE.ok().data("uservo",uservo);
            }else {
                return RE.error().message("数据库没有该用户的信息");
            }

@@ -36,9 +36,9 @@ public class UsersUpdateVO {
     private String role;
 
     /**
-     * 昵称（10个字以内)
+     * 真实姓名
      */
-    @ApiModelProperty(value="昵称（10个字以内)")
-    private String nickname;
+    @ApiModelProperty(value="真实姓名")
+    private RealinfoVO realinfo;
 
 }

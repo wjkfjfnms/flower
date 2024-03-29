@@ -27,7 +27,7 @@ public interface UsersMapper extends BaseMapper<Users> {
      * @param name
      * @return
      */
-    Users selectByNickname(String name);
+    userVO selectByname(String name);
 
     /**
      * delete by primary key

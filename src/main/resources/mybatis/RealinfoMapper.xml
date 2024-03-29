@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.flower.dao.RealinfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.flower.po.Realinfo">
+    <!--@mbg.generated-->
+    <!--@Table realinfo-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="identityCardnum" jdbcType="VARCHAR" property="identitycardnum" />
+    <result column="cardfront" jdbcType="VARCHAR" property="cardfront" />
+    <result column="cardback" jdbcType="VARCHAR" property="cardback" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, userId, realname, identityCardnum, cardfront, cardback
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from realinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from realinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.flower.po.Realinfo">
+    <!--@mbg.generated-->
+    insert into realinfo (id, userId, realname, 
+      identityCardnum, cardfront, cardback
+      )
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, 
+      #{identitycardnum,jdbcType=VARCHAR}, #{cardfront,jdbcType=VARCHAR}, #{cardback,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.flower.po.Realinfo">
+    <!--@mbg.generated-->
+    insert into realinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="realname != null">
+        realname,
+      </if>
+      <if test="identitycardnum != null">
+        identityCardnum,
+      </if>
+      <if test="cardfront != null">
+        cardfront,
+      </if>
+      <if test="cardback != null">
+        cardback,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="identitycardnum != null">
+        #{identitycardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="cardfront != null">
+        #{cardfront,jdbcType=VARCHAR},
+      </if>
+      <if test="cardback != null">
+        #{cardback,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.flower.po.Realinfo">
+    <!--@mbg.generated-->
+    update realinfo
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="realname != null">
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="identitycardnum != null">
+        identityCardnum = #{identitycardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="cardfront != null">
+        cardfront = #{cardfront,jdbcType=VARCHAR},
+      </if>
+      <if test="cardback != null">
+        cardback = #{cardback,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.flower.po.Realinfo">
+    <!--@mbg.generated-->
+    update realinfo
+    set userId = #{userid,jdbcType=INTEGER},
+      realname = #{realname,jdbcType=VARCHAR},
+      identityCardnum = #{identitycardnum,jdbcType=VARCHAR},
+      cardfront = #{cardfront,jdbcType=VARCHAR},
+      cardback = #{cardback,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
