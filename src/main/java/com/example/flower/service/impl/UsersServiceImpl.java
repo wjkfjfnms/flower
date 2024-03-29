@@ -286,7 +286,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     public RE selectAllUser(String name, PagePara pagePara) {
         if (name != null && !name.equals("")){
 //            查询某个人
-            return RE.ok();
+           Users users= usersMapper.selectByNickname(name);
+           if (users!=null){
+               return RE.ok().data("user",users);
+           }else {
+               return RE.error().message("数据库没有该用户的信息");
+           }
         }else {
 //            查询全部
             // 创建 Page 对象，指定当前页和每页显示数量

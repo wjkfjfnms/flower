@@ -77,7 +77,12 @@
     from users
   </select>
 
-
+<!--根据昵称查询用户-->
+  <select id="selectByNickname" resultMap="selectAllUserMap" parameterType="string">
+    select id, nickname,  sex, phone, state, createtime, role
+    from users
+    where nickname = #{name,jdbcType=VARCHAR}
+  </select>
 
 
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Users" useGeneratedKeys="true">

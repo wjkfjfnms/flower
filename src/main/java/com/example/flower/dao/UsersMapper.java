@@ -22,6 +22,13 @@ public interface UsersMapper extends BaseMapper<Users> {
     IPage<Users> selectAllUser(Page<PagePara> page, @Param("par")PagePara pagePara);
 
     /**
+     * 根据昵称查询某个用户信息
+     * @param name
+     * @return
+     */
+    Users selectByNickname(String name);
+
+    /**
      * delete by primary key
      * @param id primaryKey
      * @return deleteCount
