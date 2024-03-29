@@ -14,32 +14,32 @@ swagger:
   try-host: http://localhost:${server.port}
 
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/flower?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8
-    username: root
-    password: fst010720
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-  mail:
-    host: smtp.qq.com
-    username: 2020480337@qq.com
-    password: egpgvsyrdvyrfcca
-    protocol: smtp
-    default-encoding: UTF-8
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
-          ssl:
-            enable: true
-  mybatis:
-    configuration:
-      map-underscore-to-camel-case: true
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/lunarleasing?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8
+      username: root
+      password: hxx11771177
+    mvc:
+      pathmatch:
+        matching-strategy: ant_path_matcher
+    mail:
+      host: smtp.qq.com
+      username: 2020480337@qq.com
+      password: egpgvsyrdvyrfcca
+      protocol: smtp
+      default-encoding: UTF-8
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+              required: true
+            ssl:
+              enable: true
+    mybatis:
+      configuration:
+        map-underscore-to-camel-case: true
 
   # 支付配置
   alipay:

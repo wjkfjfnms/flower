@@ -6,6 +6,7 @@ import com.example.flower.dto.GetEmailCodeDTO;
 import com.example.flower.dto.PasswordLoginDTO;
 import com.example.flower.dto.RegisterDTO;
 import com.example.flower.po.Users;
+import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
 
 public interface UsersService extends IService<Users>{
@@ -37,6 +38,12 @@ public interface UsersService extends IService<Users>{
      * @return
      */
     RE findPassword(GetEmailCodeDTO getEmailCodeDTO);
+
+    /**
+     * 查询全部员工信息
+     * @return
+     */
+    RE selectAllUser(String name,PagePara pagePara);
 
     int insertSelective(Users record);
 
