@@ -18,6 +18,7 @@ import com.example.flower.util.StringUtil;
 import com.example.flower.util.TokenUtils;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
+import com.example.flower.vo.UsersUpdateVO;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,16 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     @Override
     public int deleteByPrimaryKey(Long id) {
         return usersMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public RE logoutByPrimaryKey(Integer id) {
+        int re = usersMapper.logoutByPrimaryKey(id);
+        if (re != 0){
+            return RE.ok().message("注销成功！");
+        }else {
+            return RE.error();
+        }
     }
 
     /**
@@ -327,8 +338,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
-    public int updateByPrimaryKey(Users record) {
-        return usersMapper.updateByPrimaryKey(record);
+    public RE updateByPrimaryKey(UsersUpdateVO usersUpdateVO) {
+       int re= usersMapper.updateByPrimaryKey(usersUpdateVO);
+        if (re != 0){
+            return RE.ok().message("修改成功");
+        }else {
+            return RE.error();
+        }
+
     }
 
 }

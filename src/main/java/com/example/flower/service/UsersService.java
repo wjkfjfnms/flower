@@ -8,6 +8,7 @@ import com.example.flower.dto.RegisterDTO;
 import com.example.flower.po.Users;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
+import com.example.flower.vo.UsersUpdateVO;
 
 public interface UsersService extends IService<Users>{
 
@@ -51,8 +52,10 @@ public interface UsersService extends IService<Users>{
 
     int updateByPrimaryKeySelective(Users record);
 
-    int updateByPrimaryKey(Users record);
+    RE updateByPrimaryKey(UsersUpdateVO usersUpdateVO);
 
     int deleteByPrimaryKey(Long id);
+
+    RE logoutByPrimaryKey(Integer id);
 
 }

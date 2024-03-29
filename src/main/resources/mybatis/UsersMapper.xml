@@ -85,6 +85,8 @@
   </select>
 
 
+
+
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Users" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into users
@@ -163,16 +165,34 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.flower.po.Users">
+
+  <!--  修改用户信息-->
+  <update id="updateByPrimaryKey" parameterType="com.example.flower.vo.UsersUpdateVO">
     <!--@mbg.generated-->
     update users
-    set `email` = #{email,jdbcType=VARCHAR},
-      `nickname` = #{nickname,jdbcType=VARCHAR},
-      `password` = #{password,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      touxiang = #{touxiang,jdbcType=VARCHAR},
-      createtime = #{createtime,jdbcType=TIMESTAMP}
+    <set>
+      <if test="nickname != null and nickname != ''">
+        `nickname` = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null and sex != ''">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null and phone != ''">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null and role != ''">
+        role = #{role,jdbcType=VARCHAR},
+      </if>
+    </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+<!--  注销账户-->
+  <update id="logoutByPrimaryKey" parameterType="int">
+    <!--@mbg.generated-->
+    update users
+    set state = 1
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
 </mapper>

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.flower.dto.RegisterDTO;
 import com.example.flower.po.Users;
 import com.example.flower.vo.PagePara;
+import com.example.flower.vo.UsersUpdateVO;
 import com.example.flower.vo.userVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
@@ -79,8 +80,15 @@ public interface UsersMapper extends BaseMapper<Users> {
 
     /**
      * update record
-     * @param record the updated record
+     * @param usersUpdateVO the updated record
      * @return update count
      */
-    int updateByPrimaryKey(Users record);
+    int updateByPrimaryKey(UsersUpdateVO usersUpdateVO);
+
+    /**
+     * 注销账户
+     * @param id
+     * @return
+     */
+    int logoutByPrimaryKey(Integer id);
 }
