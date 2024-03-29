@@ -1,6 +1,8 @@
 package com.example.flower.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.flower.constant.RedisConstant;
 import com.example.flower.dao.UsersMapper;
@@ -11,8 +13,10 @@ import com.example.flower.dto.RegisterDTO;
 import com.example.flower.enums.HttpStatusEnum;
 import com.example.flower.po.Users;
 import com.example.flower.service.UsersService;
+import com.example.flower.util.PageResultS;
 import com.example.flower.util.StringUtil;
 import com.example.flower.util.TokenUtils;
+import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -276,6 +280,30 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
         // 修改
         return this.baseMapper.updateById(user1) == 0 ? RE.error(HttpStatusEnum.UNKNOWN_ERROR) : RE.ok();
+    }
+
+    @Override
+    public RE selectAllUser(String name, PagePara pagePara) {
+        if (name != null && !name.equals("")){
+//            查询某个人
+            return RE.ok();
+        }else {
+//            查询全部
+            // 创建 Page 对象，指定当前页和每页显示数量
+            Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
+            IPage<Users> queryResult =usersMapper.selectAllUser(page, pagePara);
+            // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
+            PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
+            // 构建 PageResultS 对象，设置查询结果列表和分页信息
+            PageResultS<Users> result = new PageResultS<>();
+            result.setList(queryResult.getRecords());
+            result.setPage(pageResult);
+            if (result !=null){
+                return RE.ok().data("usersList",result);
+            }else {
+                return RE.error().message("查询失败，查询不到符合条件的员工信息");
+            }
+        }
     }
 
     @Override

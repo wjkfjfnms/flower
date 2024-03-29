@@ -152,6 +152,11 @@
             <version>1.60</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.1.2-beta</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

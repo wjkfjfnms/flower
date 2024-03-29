@@ -81,4 +81,10 @@ public class Users implements Serializable {
      */
     @ApiModelProperty(value="昵称（10个字以内)")
     private String nickname;
+
+    /**
+     * 状态（1：已注销 0：未注销
+     */
+    @ApiModelProperty(value="状态（1：已注销 0：未注销")
+    private Integer state;
 }

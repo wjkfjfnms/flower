@@ -1,6 +1,5 @@
 package com.example.flower.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.example.flower.constant.RedisConstant;
 import com.example.flower.dao.UsersMapper;
 import com.example.flower.dto.GetEmailCodeDTO;
