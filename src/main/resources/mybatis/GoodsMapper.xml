@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.flower.dao.GoodsMapper">
+  <resultMap id="BaseResultMap" type="com.example.flower.po.Goods">
+    <!--@mbg.generated-->
+    <!--@Table goods-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="goodsName" jdbcType="VARCHAR" property="goodsname" />
+    <result column="inventory" jdbcType="INTEGER" property="inventory" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="typeId" jdbcType="BIGINT" property="typeid" />
+    <result column="price" jdbcType="FLOAT" property="price" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="createtimes" jdbcType="TIMESTAMP" property="createtimes" />
+    <result column="sales" jdbcType="FLOAT" property="sales" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, goodsName, inventory, picture, typeId, price, `state`, createtimes, sales
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+<!--  分页查询全部商品-->
+  <select id="findAllGoods" resultMap="BaseResultMap">
+    select *
+    from goods
+  </select>
+
+<!--  删除商品-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Goods" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into goods (goodsName, inventory, picture,
+      typeId, price, `state`,
+      createtimes, sales)
+    values (#{goodsname,jdbcType=VARCHAR}, #{inventory,jdbcType=INTEGER}, #{picture,jdbcType=VARCHAR},
+      #{typeid,jdbcType=BIGINT}, #{price,jdbcType=FLOAT}, #{state,jdbcType=VARCHAR},
+      #{createtimes,jdbcType=TIMESTAMP}, #{sales,jdbcType=FLOAT})
+  </insert>
+
+<!--  添加商品-->
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Goods" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsname != null">
+        goodsName,
+      </if>
+      <if test="inventory != null">
+        inventory,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="typeid != null">
+        typeId,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="state != null">
+        `state`,
+      </if>
+      <if test="sales != null">
+        sales,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsname != null">
+        #{goodsname,jdbcType=VARCHAR},
+      </if>
+      <if test="inventory != null">
+        #{inventory,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        #{typeid,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=FLOAT},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null">
+        #{sales,jdbcType=FLOAT},
+      </if>
+    </trim>
+  </insert>
+
+<!--  修改商品信息-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.flower.po.Goods">
+    <!--@mbg.generated-->
+    update goods
+    <set>
+      <if test="goodsname != null">
+        goodsName = #{goodsname,jdbcType=VARCHAR},
+      </if>
+      <if test="inventory != null">
+        inventory = #{inventory,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        typeId = #{typeid,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=FLOAT},
+      </if>
+      <if test="state != null">
+        `state` = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null">
+        sales = #{sales,jdbcType=FLOAT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.flower.po.Goods">
+    <!--@mbg.generated-->
+    update goods
+    set goodsName = #{goodsname,jdbcType=VARCHAR},
+      inventory = #{inventory,jdbcType=INTEGER},
+      picture = #{picture,jdbcType=VARCHAR},
+      typeId = #{typeid,jdbcType=BIGINT},
+      price = #{price,jdbcType=FLOAT},
+      `state` = #{state,jdbcType=VARCHAR},
+      createtimes = #{createtimes,jdbcType=TIMESTAMP},
+      sales = #{sales,jdbcType=FLOAT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
