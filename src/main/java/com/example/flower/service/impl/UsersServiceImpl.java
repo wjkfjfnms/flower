@@ -54,12 +54,21 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
     @Override
     public RE logoutByPrimaryKey(Integer id) {
-        int re = usersMapper.logoutByPrimaryKey(id);
-        if (re != 0){
-            return RE.ok().message("注销成功！");
+        if (id == null){
+            return RE.error().message("参数不能为空！");
         }else {
-            return RE.error();
+//            在users表删除
+            int re = usersMapper.logoutByPrimaryKey(id);
+            if (re != 0){
+//                在realinfo表查询有无该用户的认证信息，如果有则删除
+                int ree = realinfoMapper.deleteByUserId(Long.valueOf(id));
+                System.out.println(ree);
+                return RE.ok().message("注销成功！");
+            }else {
+                return RE.error().message("该账户注销失败或者已注销！");
+            }
         }
+
     }
 
     /**

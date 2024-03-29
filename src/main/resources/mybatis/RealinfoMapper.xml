@@ -27,6 +27,16 @@
     delete from realinfo
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+
+<!--根据userId删除-->
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from realinfo
+    where userId = #{userId,jdbcType=BIGINT}
+  </delete>
+
+
   <insert id="insert" parameterType="com.example.flower.po.Realinfo">
     <!--@mbg.generated-->
     insert into realinfo (id, userId, realname,

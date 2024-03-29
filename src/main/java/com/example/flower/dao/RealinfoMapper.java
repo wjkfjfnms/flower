@@ -13,6 +13,13 @@ public interface RealinfoMapper {
     int deleteByPrimaryKey(Integer id);
 
     /**
+     * 根据userId删除
+     * @param userId
+     * @return
+     */
+    int deleteByUserId(Long userId);
+
+    /**
      * insert record to table
      * @param record the record
      * @return insert count
