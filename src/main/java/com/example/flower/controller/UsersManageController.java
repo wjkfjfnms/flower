@@ -23,20 +23,20 @@ public class UsersManageController {
     UsersService usersService;
 
     @ApiOperation(value = "查询全部员工")
-    @PostMapping("/selectAllUser")
+    @GetMapping("/selectAllUser")
     public RE selectAllUser(String name, PagePara pagePara){
         return usersService.selectAllUser(name,pagePara);
     }
 
     @ApiOperation(value = "修改某个员工信息")
-    @PostMapping("/updateByPrimaryKey")
+    @PutMapping("/updateByPrimaryKey")
     public RE updateByPrimaryKey(@Validated @RequestBody UsersUpdateVO usersUpdateVO){
         return usersService.updateByPrimaryKey(usersUpdateVO);
     }
 
 
     @ApiOperation(value = "注销账户")
-    @PostMapping("/logoutByPrimaryKey")
+    @PutMapping("/logoutByPrimaryKey")
     public RE logoutByPrimaryKey(Integer id){
         return usersService.logoutByPrimaryKey(id);
     }
