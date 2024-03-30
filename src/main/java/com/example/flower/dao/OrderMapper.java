@@ -2,18 +2,17 @@ package com.example.flower.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.flower.po.Goods;
+import com.example.flower.po.Order;
 import com.example.flower.vo.PagePara;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
 
 @Mapper
-public interface GoodsMapper {
-
-    Goods selectByGoodsName(String goodsName);
+public interface OrderMapper {
 
 
-    IPage<Goods> findAllGoods(Page<PagePara> page, @Param("par")PagePara pagePara);
+
+    IPage<Order> findAllOrder(Page<PagePara> page, @Param("par")PagePara pagePara);
 
     /**
      * delete by primary key
@@ -27,33 +26,35 @@ public interface GoodsMapper {
      * @param record the record
      * @return insert count
      */
-    int insert(Goods record);
+    int insert(Order record);
 
     /**
      * insert record to table selective
      * @param record the record
      * @return insert count
      */
-    int insertSelective(Goods record);
+    int insertSelective(Order record);
 
     /**
      * select by primary key
      * @param id primary key
      * @return object by primary key
      */
-    Goods selectByPrimaryKey(Long id);
+    Order selectByPrimaryKey(Long id);
+
+    Order selectByOrderNumber(String orderNumber);
 
     /**
      * update record selective
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKeySelective(Goods record);
+    int updateByPrimaryKeySelective(Order record);
 
     /**
      * update record
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKey(Goods record);
+    int updateByPrimaryKey(Order record);
 }

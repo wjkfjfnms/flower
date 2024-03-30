@@ -11,7 +11,7 @@ import com.example.flower.dao.GoodsMapper;
 
 public interface GoodsService extends IService<Goods> {
 
-    RE findAllGoods(PagePara pagePara);
+    RE findAllGoods(String goodsName,PagePara pagePara);
 
     public RE deleteByPrimaryKey(Long id);
 

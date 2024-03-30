@@ -40,7 +40,7 @@ public class GoodsManageController {
 
     @ApiOperation(value = "分页查询全部商品")
     @GetMapping("/selectAllGoods")
-    public RE selectAllGoods(PagePara pagePara){
+    public RE selectAllGoods(String goodsName,PagePara pagePara){
         return goodsService.findAllGoods(pagePara);
     }
 

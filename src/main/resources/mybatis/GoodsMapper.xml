@@ -32,6 +32,13 @@
     from goods
   </select>
 
+  <select id="selectByGoodsName" parameterType="String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select *
+    from goods
+    where goodsName = #{goodsName,jdbcType=BIGINT}
+  </select>
+
 <!--  删除商品-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     <!--@mbg.generated-->
