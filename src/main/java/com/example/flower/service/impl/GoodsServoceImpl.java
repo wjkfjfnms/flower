@@ -11,8 +11,10 @@ import com.example.flower.service.GoodsService;
 import com.example.flower.util.PageResultS;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -24,6 +26,9 @@ import java.util.function.Function;
 public class GoodsServoceImpl implements GoodsService {
     @Resource
     private GoodsMapper goodsMapper;
+
+    @Autowired
+    UploadImageServiceImpl uploadImageService;
 
 
     @Override
@@ -67,8 +72,16 @@ public class GoodsServoceImpl implements GoodsService {
 
 
     @Override
-    public RE insertSelective(Goods record) {
+    public RE insertSelective(Goods record, MultipartFile file) {
         if (record != null){
+            if (file == null || file.isEmpty()) {
+                return RE.error().message("图片上传失败");
+            }
+//            调用方法生成图片路径
+            String imagePath = uploadImageService.upload(file);
+            // 将图片路径设置到 record 对象的 picture 属性中
+            record.setPicture(imagePath);
+
             int re = goodsMapper.insertSelective(record);
             if (re != 0){
                 return RE.ok();

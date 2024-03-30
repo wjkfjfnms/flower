@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import com.example.flower.po.Goods;
 import com.example.flower.dao.GoodsMapper;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface GoodsService extends IService<Goods> {
 
@@ -19,7 +20,7 @@ public interface GoodsService extends IService<Goods> {
     public int insert(Goods record);
 
 
-    public RE insertSelective(Goods record);
+    public RE insertSelective(Goods record, MultipartFile file);
 
     public Goods selectByPrimaryKey(Long id);
 

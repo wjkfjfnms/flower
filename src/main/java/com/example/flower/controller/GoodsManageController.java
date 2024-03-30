@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -22,8 +23,8 @@ public class GoodsManageController {
 
     @ApiOperation(value = "添加商品")
     @PostMapping("/addGoods")
-    public RE addGoods(@Validated @RequestBody Goods record){
-        return goodsService.insertSelective(record);
+    public RE addGoods(@Validated @RequestBody Goods record, MultipartFile file){
+        return goodsService.insertSelective(record,file);
     }
 
     @ApiOperation(value = "修改商品信息")
