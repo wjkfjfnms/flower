@@ -1,6 +1,8 @@
 package com.example.flower.controller;
 
 import com.example.flower.dto.AddTypeDTO;
+import com.example.flower.dto.FlowerTypeDto;
+import com.example.flower.enums.flowerTypeEnum;
 import com.example.flower.po.Type;
 import com.example.flower.service.TypeService;
 import com.example.flower.vo.PagePara;
@@ -11,6 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -46,5 +52,12 @@ public class TypeManageController {
         return typeService.updateType(type);
     }
 
+    @ApiOperation(value = "获取分类类别的下拉列表数据")
+    @GetMapping("/getFlowerTypes")
+    public List<FlowerTypeDto> getFlowerTypes() {
+        return Arrays.stream(flowerTypeEnum.values())
+                .map(FlowerTypeDto::new)
+                .collect(Collectors.toList());
+    }
 
 }
