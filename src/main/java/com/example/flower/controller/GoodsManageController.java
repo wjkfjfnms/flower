@@ -45,4 +45,10 @@ public class GoodsManageController {
         return goodsService.findAllGoods(goodsName,pagePara);
     }
 
+    @ApiOperation(value = "根据销量和分类显示商品")
+    @GetMapping("/selectByType")
+    public RE selectByType(Long typeId,PagePara pagePara){
+        return goodsService.selectByType(typeId,pagePara);
+    }
+
 }

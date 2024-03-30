@@ -39,6 +39,13 @@
     where goodsName = #{goodsName,jdbcType=BIGINT}
   </select>
 
+  <select id="selectByType" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select *
+    from goods
+    where typeId = #{arg0,jdbcType=BIGINT}
+    order by sales desc
+  </select>
+
 <!--  删除商品-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     <!--@mbg.generated-->

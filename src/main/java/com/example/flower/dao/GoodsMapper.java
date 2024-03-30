@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 @Mapper
 public interface GoodsMapper {
 
+    IPage<Goods> selectByType(Long typeId,Page<PagePara> page, @Param("par")PagePara pagePara);
+
     Goods selectByGoodsName(String goodsName);
 
 

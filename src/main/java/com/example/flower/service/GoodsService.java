@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface GoodsService extends IService<Goods> {
 
+    RE selectByType(Long typeId,PagePara pagePara);
+
     RE findAllGoods(String goodsName,PagePara pagePara);
 
     public RE deleteByPrimaryKey(Long id);
