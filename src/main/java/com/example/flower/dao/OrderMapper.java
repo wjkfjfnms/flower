@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 public interface OrderMapper {
 
 
+    IPage<Order> findUserOrder(Long userid,Page<PagePara> page, @Param("par")PagePara pagePara);
+
 
     IPage<Order> findAllOrder(Page<PagePara> page, @Param("par")PagePara pagePara);
 

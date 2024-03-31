@@ -2,6 +2,8 @@ package com.example.flower.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.flower.dto.AddGoodsDTO;
+import com.example.flower.dto.StopSalesGoodsDTO;
 import com.example.flower.po.Goods;
 import com.example.flower.vo.PagePara;
 import org.apache.ibatis.annotations.Mapper;
@@ -9,6 +11,9 @@ import org.springframework.data.repository.query.Param;
 
 @Mapper
 public interface GoodsMapper {
+
+//    停售
+    int stopSalesGoods(StopSalesGoodsDTO stopSalesGoodsDTO);
 
     IPage<Goods> selectByType(Long typeId,Page<PagePara> page, @Param("par")PagePara pagePara);
 
@@ -36,7 +41,7 @@ public interface GoodsMapper {
      * @param record the record
      * @return insert count
      */
-    int insertSelective(Goods record);
+    int insertSelective(AddGoodsDTO addGoodsDTO);
 
     /**
      * select by primary key

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.flower.dao.GoodsMapper;
+import com.example.flower.dto.AddGoodsDTO;
+import com.example.flower.dto.StopSalesGoodsDTO;
 import com.example.flower.po.Goods;
 import com.example.flower.po.Type;
 import com.example.flower.service.GoodsService;
@@ -30,6 +32,26 @@ public class GoodsServoceImpl implements GoodsService {
     @Autowired
     UploadImageServiceImpl uploadImageService;
 
+
+    @Override
+    public RE stopSalesGoods(StopSalesGoodsDTO stopSalesGoodsDTO) {
+        stopSalesGoodsDTO.setState("停售");
+        if (goodsMapper.stopSalesGoods(stopSalesGoodsDTO) != 0){
+            Goods goods = goodsMapper.selectByPrimaryKey(stopSalesGoodsDTO.getId());
+            return RE.ok().data("result",goods);
+        }
+        return RE.error();
+    }
+
+    @Override
+    public RE reSalesGoods(StopSalesGoodsDTO stopSalesGoodsDTO) {
+        stopSalesGoodsDTO.setState("在售");
+        if (goodsMapper.stopSalesGoods(stopSalesGoodsDTO) != 0){
+            Goods goods = goodsMapper.selectByPrimaryKey(stopSalesGoodsDTO.getId());
+            return RE.ok().data("result",goods);
+        }
+        return RE.error();
+    }
 
     @Override
     public RE selectByType(Long typeId, PagePara pagePara) {
@@ -90,19 +112,20 @@ public class GoodsServoceImpl implements GoodsService {
 
 
     @Override
-    public RE insertSelective(Goods record, MultipartFile file) {
-        if (record != null){
-            if (file == null || file.isEmpty()) {
+    public RE insertSelective(AddGoodsDTO addGoodsDTO) {
+        if (addGoodsDTO != null){
+            if (addGoodsDTO.getFile() == null || addGoodsDTO.getFile().isEmpty()) {
                 return RE.error().message("图片上传失败");
             }
 //            调用方法生成图片路径
-            String imagePath = uploadImageService.upload(file);
+            String imagePath = uploadImageService.upload(addGoodsDTO.getFile());
             // 将图片路径设置到 record 对象的 picture 属性中
-            record.setPicture(imagePath);
-
-            int re = goodsMapper.insertSelective(record);
+            addGoodsDTO.setPicture(imagePath);
+            addGoodsDTO.setState("在售");
+            int re = goodsMapper.insertSelective(addGoodsDTO);
             if (re != 0){
-                return RE.ok();
+                Goods result = goodsMapper.selectByPrimaryKey(addGoodsDTO.getId());
+                return RE.ok().data("goods",result);
             }else {
                 return RE.error();
             }
@@ -113,8 +136,12 @@ public class GoodsServoceImpl implements GoodsService {
 
 
     @Override
-    public Goods selectByPrimaryKey(Long id) {
-        return goodsMapper.selectByPrimaryKey(id);
+    public RE selectByPrimaryKey(Long id) {
+        Goods goods = goodsMapper.selectByPrimaryKey(id);
+        if (goods != null){
+            return RE.ok().data("result",goods);
+        }
+        return RE.error();
     }
 
 
@@ -123,7 +150,8 @@ public class GoodsServoceImpl implements GoodsService {
         if (record != null){
             int re = goodsMapper.updateByPrimaryKeySelective(record);
             if (re != 0){
-                return RE.ok();
+                Goods goods = goodsMapper.selectByPrimaryKey(record.getId());
+                return RE.ok().data("result",goods);
             }else {
                 return RE.error();
             }

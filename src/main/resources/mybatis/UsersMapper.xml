@@ -168,7 +168,7 @@
   </update>
 
   <!--  修改用户信息-->
-  <update id="updateByPrimaryKey" parameterType="com.example.flower.dto.UsersUpdateVO">
+  <update id="updateByPrimaryKey" keyColumn="id" keyProperty="id" parameterType="com.example.flower.dto.UsersUpdateVO" useGeneratedKeys="true">
     <!--@mbg.generated-->
     update realinfo r
     inner join users u on r.userId = u.id

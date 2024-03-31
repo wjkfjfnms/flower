@@ -63,7 +63,7 @@
   </insert>
 
 <!--  添加商品-->
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Goods" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.dto.AddGoodsDTO" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into goods
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -115,7 +115,7 @@
   </insert>
 
 <!--  修改商品信息-->
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.flower.po.Goods">
+  <update id="updateByPrimaryKeySelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Goods" useGeneratedKeys="true">
     <!--@mbg.generated-->
     update goods
     <set>
@@ -143,6 +143,16 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+<!--  停售商品-->
+  <update id="stopSalesGoods" keyColumn="id" keyProperty="id" parameterType="com.example.flower.dto.StopSalesGoodsDTO" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    update goods
+    set `state` = #{state,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
   <update id="updateByPrimaryKey" parameterType="com.example.flower.po.Goods">
     <!--@mbg.generated-->
     update goods

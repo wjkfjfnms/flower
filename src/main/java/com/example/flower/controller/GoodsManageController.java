@@ -1,6 +1,8 @@
 package com.example.flower.controller;
 
 
+import com.example.flower.dto.AddGoodsDTO;
+import com.example.flower.dto.StopSalesGoodsDTO;
 import com.example.flower.po.Goods;
 import com.example.flower.service.GoodsService;
 import com.example.flower.vo.PagePara;
@@ -23,14 +25,14 @@ public class GoodsManageController {
 
     @ApiOperation(value = "添加商品")
     @PostMapping("/addGoods")
-    public RE addGoods(@Validated @RequestBody Goods record, MultipartFile file){
-        return goodsService.insertSelective(record,file);
+    public RE addGoods(@Validated @RequestBody AddGoodsDTO addGoodsDTO){
+        return goodsService.insertSelective(addGoodsDTO);
     }
 
     @ApiOperation(value = "修改商品信息")
     @PutMapping("/updateGoods")
-    public RE updateByPrimaryKey(@Validated @RequestBody Goods record){
-        return goodsService.updateByPrimaryKeySelective(record);
+    public RE updateByPrimaryKey(@Validated @RequestBody Goods goods){
+        return goodsService.updateByPrimaryKeySelective(goods);
     }
 
     @ApiOperation(value = "删除商品")
@@ -45,10 +47,28 @@ public class GoodsManageController {
         return goodsService.findAllGoods(goodsName,pagePara);
     }
 
+    @ApiOperation(value = "查询某个商品信息")
+    @GetMapping("/selectByPrimaryKey")
+    public RE selectByPrimaryKey(Long id){
+        return goodsService.selectByPrimaryKey(id);
+    }
+
     @ApiOperation(value = "根据销量和分类显示商品")
     @GetMapping("/selectByType")
     public RE selectByType(Long typeId,PagePara pagePara){
         return goodsService.selectByType(typeId,pagePara);
+    }
+
+    @ApiOperation(value = "停售商品")
+    @PutMapping("/stopSalesGoods")
+    public RE stopSalesGoods(@Validated @RequestBody StopSalesGoodsDTO stopSalesGoodsDTO){
+        return goodsService.stopSalesGoods(stopSalesGoodsDTO);
+    }
+
+    @ApiOperation(value = "回复销售商品")
+    @PutMapping("/reSalesGoods")
+    RE reSalesGoods(@Validated @RequestBody StopSalesGoodsDTO stopSalesGoodsDTO){
+        return goodsService.reSalesGoods(stopSalesGoodsDTO);
     }
 
 }

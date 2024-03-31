@@ -394,7 +394,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     public RE updateByPrimaryKey(UsersUpdateVO usersUpdateVO) {
        int re= usersMapper.updateByPrimaryKey(usersUpdateVO);
         if (re != 0){
-            return RE.ok().message("修改成功");
+            Users update = usersMapper.selectByPrimaryKey(usersUpdateVO.getId());
+            return RE.ok().data("result",update);
         }else {
             return RE.error();
         }

@@ -32,6 +32,13 @@
     from `order`
   </select>
 
+  <!--  分页查询所有订单-->
+  <select id="findUserOrder" resultMap="BaseResultMap" parameterType="long">
+    select *
+    from `order`
+    where userId = #{userid,jdbcType=BIGINT}
+  </select>
+
   <select id="selectByOrderNumber" parameterType="String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select

@@ -20,9 +20,15 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @ApiOperation(value = "分页查询订单")
+    @ApiOperation(value = "分页查询订单（商家,传订单编号则查找某个订单，不传则查找全部订单）")
     @PostMapping("/findAllOrder")
     public RE findAllOrder(String orderNumber,PagePara pagePara){
         return orderService.findAllOrder(orderNumber,pagePara);
+    }
+
+    @ApiOperation(value = "分页查询订单（用户）")
+    @PostMapping("/findUserOrder")
+    RE findUserOrder(PagePara pagePara){
+        return orderService.findUserOrder(pagePara);
     }
 }
