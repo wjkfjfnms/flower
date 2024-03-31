@@ -16,4 +16,6 @@ public interface TypeService extends IService<Type> {
     RE selectAllType(PagePara pagePara);
 
     RE updateType(Type type);
+
+    RE getType();
 }

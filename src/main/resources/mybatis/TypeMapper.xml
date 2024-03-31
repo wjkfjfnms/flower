@@ -27,6 +27,11 @@
     from type
   </select>
 
+  <select id="getType" resultMap="BaseResultMap">
+    select id, typeName, typeC, typeImage
+    from type
+  </select>
+
   <!--  删除分类-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     <!--@mbg.generated-->

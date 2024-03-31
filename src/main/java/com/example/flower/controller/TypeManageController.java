@@ -52,12 +52,19 @@ public class TypeManageController {
         return typeService.updateType(type);
     }
 
+//    @ApiOperation(value = "获取分类类别的下拉列表数据")
+//    @GetMapping("/getFlowerTypes")
+//    public List<FlowerTypeDto> getFlowerTypes() {
+//        return Arrays.stream(flowerTypeEnum.values())
+//                .map(FlowerTypeDto::new)
+//                .collect(Collectors.toList());
+//    }
+
     @ApiOperation(value = "获取分类类别的下拉列表数据")
     @GetMapping("/getFlowerTypes")
-    public List<FlowerTypeDto> getFlowerTypes() {
-        return Arrays.stream(flowerTypeEnum.values())
-                .map(FlowerTypeDto::new)
-                .collect(Collectors.toList());
+    public RE getFlowerTypes(){
+        return typeService.getType();
     }
+
 
 }

@@ -15,11 +15,14 @@ import com.example.flower.util.PageResultS;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
 import com.example.flower.vo.userVO;
+import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -94,6 +97,15 @@ public class TypeServiceImpl implements TypeService {
         }else {
             return RE.error().message("参数为空！");
         }
+    }
+
+    @Override
+    public RE getType() {
+        List<Type> typeList = typeMapper.getType();
+        if (typeList != null){
+            return RE.ok().data("result",typeList);
+        }
+        return RE.error().message("没有数据！");
     }
 
     @Override

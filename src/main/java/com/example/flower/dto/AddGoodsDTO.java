@@ -38,6 +38,7 @@ public class AddGoodsDTO {
     @ApiModelProperty(value="所属类别id")
     private Long typeid;
 
+
     /**
      * 商品价格
      */

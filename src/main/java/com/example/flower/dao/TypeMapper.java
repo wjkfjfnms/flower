@@ -7,6 +7,8 @@ import com.example.flower.vo.PagePara;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 @Mapper
 public interface TypeMapper {
     /**
@@ -28,6 +30,8 @@ public interface TypeMapper {
      * @return
      */
     IPage<Type> selectAllType(Page<PagePara> page, @Param("par")PagePara pagePara);
+
+    List<Type> getType();
 
     /**
      * insert record to table selective
