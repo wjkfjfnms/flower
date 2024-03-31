@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.flower.dto.RegisterDTO;
 import com.example.flower.po.AddUserPO;
 import com.example.flower.po.Users;
+import com.example.flower.vo.OneUserVO;
 import com.example.flower.vo.PagePara;
 import com.example.flower.dto.UsersUpdateVO;
 import com.example.flower.vo.userVO;
@@ -92,4 +93,6 @@ public interface UsersMapper extends BaseMapper<Users> {
      * @return
      */
     int logoutByPrimaryKey(Integer id);
+
+    OneUserVO findOneUser(Long id);
 }

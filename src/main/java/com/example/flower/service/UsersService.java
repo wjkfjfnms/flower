@@ -60,4 +60,6 @@ public interface UsersService extends IService<Users>{
 
     RE logoutByPrimaryKey(Integer id);
 
+    RE findOneUser(Long id);
+
 }

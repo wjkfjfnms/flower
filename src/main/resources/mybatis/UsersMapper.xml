@@ -25,6 +25,44 @@
     from users
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+<!--  查询某个员工的信息-->
+  <resultMap id="OneUserResultMap" type="com.example.flower.vo.OneUserVO">
+    <id column="id" property="id"/>
+    <result column="email" property="email"/>
+    <result column="password" property="password"/>
+    <result column="salt" property="salt"/>
+    <result column="sex" property="sex"/>
+    <result column="phone" property="phone"/>
+    <result column="touxiang" property="touxiang"/>
+    <result column="createtime" property="createtime"/>
+    <result column="role" property="role"/>
+    <result column="nickname" property="nickname"/>
+    <result column="state" property="state"/>
+    <!-- 实名信息 -->
+    <collection property="realinfoList" ofType="com.example.flower.po.Realinfo">
+      <id column="realinfo_id" property="id"/>
+      <result column="realname" property="realname"/>
+      <result column="identitycardnum" property="identitycardnum"/>
+      <result column="cardfront" property="cardfront"/>
+      <result column="cardback" property="cardback"/>
+      <!-- 其他实名信息字段 -->
+    </collection>
+  </resultMap>
+
+  <select id="findOneUser" parameterType="long" resultMap="OneUserResultMap">
+    SELECT
+    u.id, u.email, u.password, u.salt, u.sex, u.phone, u.touxiang, u.createtime, u.role, u.nickname, u.state,
+    r.id as realinfo_id, r.realname, r.identitycardnum, r.cardfront, r.cardback
+    FROM
+    users u
+    LEFT JOIN
+    realinfo r ON u.id = r.userId
+    WHERE
+    u.id = #{id}
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     <!--@mbg.generated-->
     delete from users

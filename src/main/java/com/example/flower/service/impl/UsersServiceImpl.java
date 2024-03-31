@@ -16,6 +16,7 @@ import com.example.flower.service.UsersService;
 import com.example.flower.util.PageResultS;
 import com.example.flower.util.StringUtil;
 import com.example.flower.util.TokenUtils;
+import com.example.flower.vo.OneUserVO;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
 import com.example.flower.vo.userVO;
@@ -69,6 +70,15 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
             }
         }
 
+    }
+
+    @Override
+    public RE findOneUser(Long id) {
+        OneUserVO oneUserVO = usersMapper.findOneUser(id);
+        if (oneUserVO != null){
+            return RE.ok().data("result",oneUserVO);
+        }
+        return RE.error();
     }
 
     /**
@@ -371,7 +381,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
             //        在realinfo表添加用户信息，返回主键
             int realinfoId = realinfoMapper.AddUser(realinfo);
             if (realinfoId != 0){
-                return RE.ok().data("id",addUserPO.getId());
+                OneUserVO users = usersMapper.findOneUser(addUserPO.getId());
+                return RE.ok().data("result",users);
             }else {
                 return RE.error().message("realinfo表添加失败！");
             }
