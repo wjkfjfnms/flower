@@ -7,6 +7,7 @@ import com.example.flower.dto.AddCart;
 import com.example.flower.dto.UpdateCartDTO;
 import com.example.flower.po.Goods;
 import com.example.flower.po.Order;
+import com.example.flower.service.CommonService;
 import com.example.flower.util.PageResultS;
 import com.example.flower.vo.CartVO;
 import com.example.flower.vo.PagePara;
@@ -27,11 +28,15 @@ public class CartServiceImpl implements CartService{
     @Autowired
     private GoodsMapper goodsMapper;
 
+    @Autowired
+    CommonService commonService;
+
     @Override
-    public RE findAll(Long userId, PagePara pagePara) {
+    public RE findAll(PagePara pagePara) {
+        Long id = commonService.getUsersDetails().getId();
         // 创建 Page 对象，指定当前页和每页显示数量
         Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-        IPage<CartVO> queryResult =cartMapper.findAll(userId,page, pagePara);
+        IPage<CartVO> queryResult =cartMapper.findAll(id,page, pagePara);
         // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
         PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
         // 构建 PageResultS 对象，设置查询结果列表和分页信息

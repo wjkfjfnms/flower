@@ -8,7 +8,7 @@ import com.example.flower.vo.RE;
 
 public interface CartService{
 
-    RE findAll(Long userId, PagePara pagePara);
+    RE findAll(PagePara pagePara);
 
     RE deleteByPrimaryKey(Long id);
 

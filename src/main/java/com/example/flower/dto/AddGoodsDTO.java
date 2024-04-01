@@ -51,11 +51,6 @@ public class AddGoodsDTO {
     @ApiModelProperty(value="售卖状态")
     private String state;
 
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value="创建时间")
-    private Date createtimes;
 
     /**
      * 销量
