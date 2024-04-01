@@ -26,6 +26,8 @@ public class GoodsManageController {
     @ApiOperation(value = "添加商品")
     @PostMapping("/addGoods")
     public RE addGoods(AddGoodsDTO addGoodsDTO,MultipartFile file){
+        System.out.println("dto:" + addGoodsDTO);
+        System.out.println("file:" + file);
         return goodsService.insertSelective(addGoodsDTO,file);
     }
 

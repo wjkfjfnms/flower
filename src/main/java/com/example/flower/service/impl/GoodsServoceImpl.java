@@ -114,9 +114,9 @@ public class GoodsServoceImpl implements GoodsService {
     @Override
     public RE insertSelective(AddGoodsDTO addGoodsDTO, MultipartFile file) {
         if (addGoodsDTO != null) {
-            if (file == null || file.isEmpty()) {
-                return RE.error().message("图片上传失败");
-            }
+//            if (file == null || file.isEmpty()) {
+//                return RE.error().message("图片上传失败");
+//            }
 //            调用方法生成图片路径
             Map<String, String> res = uploadImageService.upload(file);
 //            String imagePath = res.get("path");
