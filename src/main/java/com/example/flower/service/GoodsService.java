@@ -31,7 +31,7 @@ public interface GoodsService extends IService<Goods> {
     public int insert(Goods record);
 
 
-    public RE insertSelective(AddGoodsDTO addGoodsDTO);
+    public RE insertSelective(AddGoodsDTO addGoodsDTO,MultipartFile file);
 
     public RE selectByPrimaryKey(Long id);
 

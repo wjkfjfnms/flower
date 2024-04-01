@@ -112,13 +112,13 @@ public class GoodsServoceImpl implements GoodsService {
 
 
     @Override
-    public RE insertSelective(AddGoodsDTO addGoodsDTO) {
+    public RE insertSelective(AddGoodsDTO addGoodsDTO,MultipartFile file) {
         if (addGoodsDTO != null){
-            if (addGoodsDTO.getFile() == null || addGoodsDTO.getFile().isEmpty()) {
+            if (file == null || file.isEmpty()) {
                 return RE.error().message("图片上传失败");
             }
 //            调用方法生成图片路径
-            String imagePath = uploadImageService.upload(addGoodsDTO.getFile());
+            String imagePath = uploadImageService.upload(file);
             // 将图片路径设置到 record 对象的 picture 属性中
             addGoodsDTO.setPicture(imagePath);
             addGoodsDTO.setState("在售");
