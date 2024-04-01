@@ -2,6 +2,7 @@ package com.example.flower.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration // 一定不要忽略此注解
@@ -14,6 +15,11 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedMethods(new String[]{"GET", "POST", "PUT", "DELETE"}) // 支持方法
                 .allowedHeaders("*")
                 .exposedHeaders("*");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/img/**").addResourceLocations("file:C:/Users/Lenovo/Desktop/flower/flower/src/main/resources/static/images/");
     }
 }
 

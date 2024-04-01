@@ -36,9 +36,9 @@ public class GoodsServoceImpl implements GoodsService {
     @Override
     public RE stopSalesGoods(StopSalesGoodsDTO stopSalesGoodsDTO) {
         stopSalesGoodsDTO.setState("停售");
-        if (goodsMapper.stopSalesGoods(stopSalesGoodsDTO) != 0){
+        if (goodsMapper.stopSalesGoods(stopSalesGoodsDTO) != 0) {
             Goods goods = goodsMapper.selectByPrimaryKey(stopSalesGoodsDTO.getId());
-            return RE.ok().data("result",goods);
+            return RE.ok().data("result", goods);
         }
         return RE.error();
     }
@@ -46,9 +46,9 @@ public class GoodsServoceImpl implements GoodsService {
     @Override
     public RE reSalesGoods(StopSalesGoodsDTO stopSalesGoodsDTO) {
         stopSalesGoodsDTO.setState("在售");
-        if (goodsMapper.stopSalesGoods(stopSalesGoodsDTO) != 0){
+        if (goodsMapper.stopSalesGoods(stopSalesGoodsDTO) != 0) {
             Goods goods = goodsMapper.selectByPrimaryKey(stopSalesGoodsDTO.getId());
-            return RE.ok().data("result",goods);
+            return RE.ok().data("result", goods);
         }
         return RE.error();
     }
@@ -57,38 +57,38 @@ public class GoodsServoceImpl implements GoodsService {
     public RE selectByType(Long typeId, PagePara pagePara) {
         // 创建 Page 对象，指定当前页和每页显示数量
         Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-        IPage<Goods> queryResult =goodsMapper.selectByType(typeId,page, pagePara);
+        IPage<Goods> queryResult = goodsMapper.selectByType(typeId, page, pagePara);
         // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
         PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
         // 构建 PageResultS 对象，设置查询结果列表和分页信息
         PageResultS<Goods> result = new PageResultS<>();
         result.setList(queryResult.getRecords());
         result.setPage(pageResult);
-        if (result != null){
-            return RE.ok().data("GoodsList",result);
-        }else {
+        if (result != null) {
+            return RE.ok().data("GoodsList", result);
+        } else {
             return RE.error();
         }
     }
 
     @Override
-    public RE findAllGoods(String goodsName,PagePara pagePara) {
-        if (goodsName != null && !goodsName.equals("")){
+    public RE findAllGoods(String goodsName, PagePara pagePara) {
+        if (goodsName != null && !goodsName.equals("")) {
 //            查询某个订单
-            return RE.ok().data("Order",goodsMapper.selectByGoodsName(goodsName));
-        }else {
+            return RE.ok().data("Order", goodsMapper.selectByGoodsName(goodsName));
+        } else {
             // 创建 Page 对象，指定当前页和每页显示数量
             Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-            IPage<Goods> queryResult =goodsMapper.findAllGoods(page, pagePara);
+            IPage<Goods> queryResult = goodsMapper.findAllGoods(page, pagePara);
             // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
             PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
             // 构建 PageResultS 对象，设置查询结果列表和分页信息
             PageResultS<Goods> result = new PageResultS<>();
             result.setList(queryResult.getRecords());
             result.setPage(pageResult);
-            if (result != null){
-                return RE.ok().data("GoodsList",result);
-            }else {
+            if (result != null) {
+                return RE.ok().data("GoodsList", result);
+            } else {
                 return RE.error();
             }
         }
@@ -97,9 +97,9 @@ public class GoodsServoceImpl implements GoodsService {
     @Override
     public RE deleteByPrimaryKey(Long id) {
         int re = goodsMapper.deleteByPrimaryKey(id);
-        if (re!=0){
+        if (re != 0) {
             return RE.ok();
-        }else {
+        } else {
             return RE.error();
         }
     }
@@ -112,24 +112,26 @@ public class GoodsServoceImpl implements GoodsService {
 
 
     @Override
-    public RE insertSelective(AddGoodsDTO addGoodsDTO,MultipartFile file) {
-        if (addGoodsDTO != null){
+    public RE insertSelective(AddGoodsDTO addGoodsDTO, MultipartFile file) {
+        if (addGoodsDTO != null) {
             if (file == null || file.isEmpty()) {
                 return RE.error().message("图片上传失败");
             }
 //            调用方法生成图片路径
-            String imagePath = uploadImageService.upload(file);
+            Map<String, String> res = uploadImageService.upload(file);
+//            String imagePath = res.get("path");
+            String fileName = res.get("name");
             // 将图片路径设置到 record 对象的 picture 属性中
-            addGoodsDTO.setPicture(imagePath);
+            addGoodsDTO.setPicture(fileName);
             addGoodsDTO.setState("在售");
             int re = goodsMapper.insertSelective(addGoodsDTO);
-            if (re != 0){
+            if (re != 0) {
                 Goods result = goodsMapper.selectByPrimaryKey(addGoodsDTO.getId());
-                return RE.ok().data("goods",result);
-            }else {
+                return RE.ok().data("goods", result);
+            } else {
                 return RE.error();
             }
-        }else {
+        } else {
             return RE.error().message("参数为空！");
         }
     }
@@ -138,8 +140,8 @@ public class GoodsServoceImpl implements GoodsService {
     @Override
     public RE selectByPrimaryKey(Long id) {
         Goods goods = goodsMapper.selectByPrimaryKey(id);
-        if (goods != null){
-            return RE.ok().data("result",goods);
+        if (goods != null) {
+            return RE.ok().data("result", goods);
         }
         return RE.error();
     }
@@ -147,15 +149,15 @@ public class GoodsServoceImpl implements GoodsService {
 
     @Override
     public RE updateByPrimaryKeySelective(Goods record) {
-        if (record != null){
+        if (record != null) {
             int re = goodsMapper.updateByPrimaryKeySelective(record);
-            if (re != 0){
+            if (re != 0) {
                 Goods goods = goodsMapper.selectByPrimaryKey(record.getId());
-                return RE.ok().data("result",goods);
-            }else {
+                return RE.ok().data("result", goods);
+            } else {
                 return RE.error();
             }
-        }else {
+        } else {
             return RE.error().message("参数为空！");
         }
 

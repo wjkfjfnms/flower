@@ -18,7 +18,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/flower?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=GMT%2B8
     username: root
-    password: hxx11771177
+    password: fst010720
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -40,6 +40,9 @@ spring:
   mybatis:
     configuration:
       map-underscore-to-camel-case: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
   # 支付配置
   alipay:

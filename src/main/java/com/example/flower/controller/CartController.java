@@ -41,7 +41,7 @@ public class CartController {
 
     @ApiOperation(value = "分页查询用户购物车")
     @GetMapping("/findAll")
-    public RE findAll(Long userId, PagePara pagePara){
-        return cartService.findAll(userId,pagePara);
+    public RE findAll(PagePara pagePara){
+        return cartService.findAll(pagePara);
     }
 }
