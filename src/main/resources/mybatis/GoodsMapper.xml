@@ -115,7 +115,7 @@
   </insert>
 
 <!--  修改商品信息-->
-  <update id="updateByPrimaryKeySelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Goods" useGeneratedKeys="true">
+  <update id="updateByPrimaryKeySelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.dto.UpdateGoodsDTO" useGeneratedKeys="true">
     <!--@mbg.generated-->
     update goods
     <set>
@@ -133,12 +133,6 @@
       </if>
       <if test="price != null">
         price = #{price,jdbcType=FLOAT},
-      </if>
-      <if test="state != null">
-        `state` = #{state,jdbcType=VARCHAR},
-      </if>
-      <if test="sales != null">
-        sales = #{sales,jdbcType=FLOAT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -166,4 +160,12 @@
       sales = #{sales,jdbcType=FLOAT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+<!--  模糊查询商品-->
+  <select id="findGoods" parameterType="string" resultMap="BaseResultMap">
+    select *
+    from goods
+    where goodsName like CONCAT('%', #{arg0}, '%')
+  </select>
+
 </mapper>

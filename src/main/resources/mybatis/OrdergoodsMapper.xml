@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.flower.dao.OrdergoodsMapper">
+  <resultMap id="BaseResultMap" type="com.example.flower.po.Ordergoods">
+    <!--@mbg.generated-->
+    <!--@Table ordergoods-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="orderId" jdbcType="BIGINT" property="orderid" />
+    <result column="goodsId" jdbcType="BIGINT" property="goodsid" />
+    <result column="goodsPrice" jdbcType="FLOAT" property="goodsprice" />
+    <result column="goodsNum" jdbcType="INTEGER" property="goodsnum" />
+    <result column="goods" jdbcType="VARCHAR" property="goodsName" />
+  </resultMap>
+
+  <resultMap id="orderResultMap" type="com.example.flower.dto.CreateOrderDTO">
+    <id property="id" column="id"/>
+    <result property="orderNumber" column="orderNumber"/>
+    <result property="state" column="state"/>
+    <result property="userId" column="userId"/>
+    <result property="phone" column="phone"/>
+    <result property="address" column="address"/>
+    <result property="price" column="price"/>
+    <result property="createtime" column="createtime"/>
+    <result property="overtime" column="overtime"/>
+    <result property="deliveryPeopleName" column="deliveryPeopleName"/>
+    <result property="deliveryPeoplePhone" column="deliveryPeoplePhone"/>
+    <collection property="orderGoodsList" ofType="com.example.flower.po.Ordergoods">
+      <id property="id" column="orderGoodsId"/>
+      <result property="goodsId" column="goodsId"/>
+      <result property="goodsPrice" column="goodsPrice"/>
+      <result property="goodsNum" column="goodsNum"/>
+      <result property="goodsName" column="goodsName"/>
+    </collection>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, orderId, goodsId, goodsPrice, goodsNum, goodsName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    o.id,
+    o.orderNumber,
+    o.state,
+    o.userId,
+    o.phone,
+    o.address,
+    o.price,
+    o.createtime,
+    o.overtime,
+    o.deliveryPeopleName,
+    o.deliveryPeoplePhone,
+    og.id AS orderGoodsId,
+    og.goodsId,
+    og.goodsPrice,
+    og.goodsNum,
+    og.goodsName
+    FROM
+    `order` o
+    LEFT JOIN
+    ordergoods og ON o.id = og.orderId
+    WHERE
+    o.id = #{orderId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from ordergoods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.flower.po.Ordergoods">
+    <!--@mbg.generated-->
+    insert into ordergoods (id, orderId, goodsId,
+      goodsPrice, goodsNum, goodsName
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderid,jdbcType=BIGINT}, #{goodsid,jdbcType=BIGINT},
+      #{goodsprice,jdbcType=FLOAT}, #{goodsnum,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.flower.po.Ordergoods">
+    <!--@mbg.generated-->
+    insert into ordergoods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderid != null">
+        orderId,
+      </if>
+      <if test="goodsid != null">
+        goodsId,
+      </if>
+      <if test="goodsprice != null">
+        goodsPrice,
+      </if>
+      <if test="goodsnum != null">
+        goodsNum,
+      </if>
+      <if test="goodsName != null">
+        goodsName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderid != null">
+        #{orderid,jdbcType=BIGINT},
+      </if>
+      <if test="goodsid != null">
+        #{goodsid,jdbcType=BIGINT},
+      </if>
+      <if test="goodsprice != null">
+        #{goodsprice,jdbcType=FLOAT},
+      </if>
+      <if test="goodsnum != null">
+        #{goodsnum,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.flower.po.Ordergoods">
+    <!--@mbg.generated-->
+    update ordergoods
+    <set>
+      <if test="orderid != null">
+        orderId = #{orderid,jdbcType=BIGINT},
+      </if>
+      <if test="goodsid != null">
+        goodsId = #{goodsid,jdbcType=BIGINT},
+      </if>
+      <if test="goodsprice != null">
+        goodsPrice = #{goodsprice,jdbcType=FLOAT},
+      </if>
+      <if test="goodsnum != null">
+        goodsNum = #{goodsnum,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        goodsName = #{goodsName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.flower.po.Ordergoods">
+    <!--@mbg.generated-->
+    update ordergoods
+    set orderId = #{orderid,jdbcType=BIGINT},
+      goodsId = #{goodsid,jdbcType=BIGINT},
+      goodsPrice = #{goodsprice,jdbcType=FLOAT},
+      goodsNum = #{goodsnum,jdbcType=INTEGER},
+      goodsName = #{goodsName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

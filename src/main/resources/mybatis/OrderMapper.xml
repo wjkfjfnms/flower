@@ -12,27 +12,53 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="price" jdbcType="FLOAT" property="price" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="overtime" jdbcType="TIMESTAMP" property="overtime" />
+    <result column="overtime" jdbcType="VARCHAR" property="overtime" />
+    <result column="deliveryPeopleName" jdbcType="VARCHAR" property="deliveryPeopleName" />
+    <result column="deliveryPeoplePhone" jdbcType="VARCHAR" property="deliveryPeoplePhone" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, orderNumber, `state`, userId, phone, address, price, createtime, overtime
+    id, orderNumber, `state`, userId, phone, address, price, createtime, overtime,deliveryPeopleName,deliveryPeoplePhone
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+
+
+  <resultMap id="orderMap" type="com.example.flower.vo.OrderVO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="orderNumber" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="price" jdbcType="FLOAT" property="price" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="overtime" jdbcType="VARCHAR" property="overtime" />
+    <result column="deliveryPeopleName" jdbcType="VARCHAR" property="deliveryPeopleName" />
+    <result column="deliveryPeoplePhone" jdbcType="VARCHAR" property="deliveryPeoplePhone" />
+    <collection property="ordergoodsList" ofType="com.example.flower.po.Ordergoods">
+      <result column="goodsName" jdbcType="VARCHAR" property="goodsName" />
+      <result column="goodsnum" jdbcType="VARCHAR" property="goodsnum" />
+      <result column="goodsprice" jdbcType="VARCHAR" property="goodsprice" />
+    </collection>
+  </resultMap>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="orderMap">
     <!--@mbg.generated-->
-    select
-    <include refid="Base_Column_List" />
-    from `order`
+    select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,o.deliveryPeopleName,o.deliveryPeoplePhone,
+    o.name,og.goodsName,goodsNum,og.goodsPrice
+    from order o
+    join ordergoods og on o.id = og.orderId
     where id = #{id,jdbcType=BIGINT}
   </select>
 
-<!--  分页查询所有订单-->
+<!--  商家分页查询所有订单-->
   <select id="findAllOrder" resultMap="BaseResultMap">
-    select *
-    from `order`
+    select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,o.deliveryPeopleName,o.deliveryPeoplePhone,
+           o.name,og.goodsName,goodsNum,og.goodsPrice
+    from order o
+    join ordergoods og on o.id = og.orderId
   </select>
 
-  <!--  分页查询所有订单-->
+  <!--  分页查询用户所有订单-->
   <select id="findUserOrder" resultMap="BaseResultMap" parameterType="long">
     select *
     from `order`
@@ -64,7 +90,9 @@
       #{price,jdbcType=FLOAT}, #{createtime,jdbcType=TIMESTAMP}, #{overtime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.example.flower.po.Order">
+
+<!--  创建订单-->
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Order" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into `order`
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -89,9 +117,6 @@
       <if test="price != null">
         price,
       </if>
-      <if test="createtime != null">
-        createtime,
-      </if>
       <if test="overtime != null">
         overtime,
       </if>
@@ -104,7 +129,7 @@
         #{ordernumber,jdbcType=VARCHAR},
       </if>
       <if test="state != null">
-        #{state,jdbcType=INTEGER},
+        #{state,jdbcType=VARCHAR},
       </if>
       <if test="userid != null">
         #{userid,jdbcType=BIGINT},
@@ -118,11 +143,8 @@
       <if test="price != null">
         #{price,jdbcType=FLOAT},
       </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
       <if test="overtime != null">
-        #{overtime,jdbcType=TIMESTAMP},
+        #{overtime,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -157,17 +179,21 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+<!--  为订单分配派送员-->
   <update id="updateByPrimaryKey" parameterType="com.example.flower.po.Order">
     <!--@mbg.generated-->
     update `order`
-    set orderNumber = #{ordernumber,jdbcType=VARCHAR},
-      `state` = #{state,jdbcType=INTEGER},
-      userId = #{userid,jdbcType=BIGINT},
-      phone = #{phone,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      price = #{price,jdbcType=FLOAT},
-      createtime = #{createtime,jdbcType=TIMESTAMP},
-      overtime = #{overtime,jdbcType=TIMESTAMP}
+    set deliveryPeopleName = #{deliveryPeopleName,jdbcType=VARCHAR},
+    deliveryPeoplePhone = #{deliveryPeoplePhone,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+<!--  修改订单状态-->
+  <update id="updateOrderState" parameterType="com.example.flower.dto.UpdateGoodsDTO">
+    update order
+    set state = #{state,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
 </mapper>
