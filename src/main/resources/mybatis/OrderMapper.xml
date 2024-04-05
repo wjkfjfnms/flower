@@ -18,7 +18,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, orderNumber, `state`, userId, phone, address, price, createtime, overtime,deliveryPeopleName,deliveryPeoplePhone
+    id, orderNumber, state, userId, phone, address, price, createtime, overtime,deliveryPeopleName,deliveryPeoplePhone
   </sql>
 
 
@@ -56,6 +56,7 @@
            o.name,og.goodsName,goodsNum,og.goodsPrice
     from order o
     join ordergoods og on o.id = og.orderId
+    order by createtime desc
   </select>
 
   <!--  分页查询用户所有订单-->
@@ -63,14 +64,15 @@
     select *
     from `order`
     where userId = #{userid,jdbcType=BIGINT}
+    order by createtime desc
   </select>
 
   <select id="selectByOrderNumber" parameterType="String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select
     <include refid="Base_Column_List" />
-    from `order`
-    where orderNumber = #{orderNumber,jdbcType=BIGINT}
+    from order
+    where orderNumber like CONCAT('%', #{arg0}, '%')
   </select>
 
 
