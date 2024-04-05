@@ -21,10 +21,10 @@ public interface GoodsMapper {
 
     IPage<Goods> selectByType(Long typeId,Page<PagePara> page, @Param("par")PagePara pagePara);
 
-    Goods selectByGoodsName(String goodsName);
+    IPage<Goods> selectByGoodsName(String goodsName,Page<PagePara> page, @Param("par")PagePara pagePara);
 
 
-    IPage<Goods> findAllGoods(Page<PagePara> page, @Param("par")PagePara pagePara);
+    IPage<Goods> findAllGoodsByPage(Page<PagePara> page, @Param("par")PagePara pagePara);
 
     /**
      * delete by primary key

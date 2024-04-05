@@ -27,7 +27,7 @@
   </select>
 
 <!--  分页查询全部商品-->
-  <select id="findAllGoods" resultMap="BaseResultMap">
+  <select id="findAllGoodsByPage" resultMap="BaseResultMap">
     select *
     from goods
   </select>
@@ -36,7 +36,7 @@
     <!--@mbg.generated-->
     select *
     from goods
-    where goodsName = #{goodsName,jdbcType=BIGINT}
+    where goodsName like CONCAT('%', #{arg0}, '%')
   </select>
 
   <select id="selectByType" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -52,6 +52,7 @@
     delete from goods
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.flower.po.Goods" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into goods (goodsName, inventory, picture,
@@ -165,7 +166,7 @@
   <select id="findGoods" parameterType="string" resultMap="BaseResultMap">
     select *
     from goods
-    where goodsName like CONCAT('%', #{arg0}, '%')
+    where goodsName like CONCAT('%', #{arg0}, '%') and state = '在售'
   </select>
 
 </mapper>
