@@ -20,6 +20,6 @@ public class AddTypeDTO {
     /**
      * 分类图片
      */
-    @ApiModelProperty(value="分类图片")
+    @ApiModelProperty(value="分类图片(不传这里)")
     private String typeimage;
 }

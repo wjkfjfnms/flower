@@ -3,6 +3,7 @@ package com.example.flower.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.flower.dto.AddGoodsDTO;
 import com.example.flower.dto.StopSalesGoodsDTO;
+import com.example.flower.dto.UpdateGoodsDTO;
 import com.example.flower.po.Type;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
@@ -36,9 +37,11 @@ public interface GoodsService extends IService<Goods> {
     public RE selectByPrimaryKey(Long id);
 
 
-    public RE updateByPrimaryKeySelective(Goods record);
+    public RE updateByPrimaryKeySelective(UpdateGoodsDTO updateGoodsDTO, MultipartFile file);
 
 
     public int updateByPrimaryKey(Goods record);
+
+    RE findGoods(String keyword,PagePara pagePara);
 
 }

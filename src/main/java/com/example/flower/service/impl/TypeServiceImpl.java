@@ -11,6 +11,7 @@ import com.example.flower.dto.AddTypeDTO;
 import com.example.flower.po.Type;
 import com.example.flower.po.Users;
 import com.example.flower.service.TypeService;
+import com.example.flower.service.UploadImageService;
 import com.example.flower.util.PageResultS;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
@@ -19,6 +20,7 @@ import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.Collection;
@@ -33,13 +35,16 @@ public class TypeServiceImpl implements TypeService {
     @Autowired
     TypeMapper typeMapper;
 
+    @Autowired
+    UploadImageService uploadImageService;
+
     @Override
-    public RE addType(AddTypeDTO addTypeDTO){
+    public RE addType(AddTypeDTO addTypeDTO, MultipartFile file){
         if (addTypeDTO != null){
             Type type = new Type();
             type.setTypec(addTypeDTO.getTypec());
             type.setTypename(addTypeDTO.getTypename());
-            type.setTypeimage(addTypeDTO.getTypeimage());
+            type.setTypeimage(uploadImageService.upload(file).get("name"));
             int re=typeMapper.insert(type);
             if (re != 0){
                 return RE.ok();
@@ -86,8 +91,9 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public RE updateType(Type type) {
+    public RE updateType(Type type, MultipartFile file) {
         if (type != null){
+            type.setTypeimage(uploadImageService.upload(file).get("name"));
             int re = typeMapper.updateByPrimaryKeySelective(type);
             if (re != 0){
                 return RE.ok();

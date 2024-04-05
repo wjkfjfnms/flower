@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,8 +30,8 @@ public class TypeManageController {
 
     @ApiOperation(value = "添加分类")
     @PostMapping("/addType")
-    public RE addType(@Validated @RequestBody AddTypeDTO addTypeDTO){
-        return typeService.addType(addTypeDTO);
+    public RE addType(AddTypeDTO addTypeDTO, MultipartFile file){
+        return typeService.addType(addTypeDTO,file);
     }
 
     @ApiOperation(value = "删除分类")
@@ -48,8 +49,8 @@ public class TypeManageController {
 
     @ApiOperation(value = "修改分类信息")
     @PutMapping("/updateType")
-    public RE updateType(@Validated @RequestBody Type type){
-        return typeService.updateType(type);
+    public RE updateType(Type type, MultipartFile file){
+        return typeService.updateType(type,file);
     }
 
 //    @ApiOperation(value = "获取分类类别的下拉列表数据")

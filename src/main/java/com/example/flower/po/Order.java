@@ -27,7 +27,7 @@ public class Order {
     * 订单状态
     */
     @ApiModelProperty(value="订单状态")
-    private Integer state;
+    private String state;
 
     /**
     * 所属用户
@@ -63,5 +63,11 @@ public class Order {
     * 送达时间
     */
     @ApiModelProperty(value="送达时间")
-    private Date overtime;
+    private String overtime;
+
+    @ApiModelProperty(value="派送员名字")
+    private String deliveryPeopleName;
+
+    @ApiModelProperty(value="派送员电话")
+    private String deliveryPeoplePhone;
 }

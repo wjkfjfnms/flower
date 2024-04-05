@@ -16,7 +16,7 @@ import java.util.UUID;
 @Transactional
 public class UploadImageServiceImpl implements UploadImageService {
 
-    String newName;
+
 
     @Override
     public Map<String, String> upload(MultipartFile file) {
@@ -34,7 +34,7 @@ public class UploadImageServiceImpl implements UploadImageService {
         String ext = "."+ originalFilename.split("\\.")[1];
         //生成一个新的文件名（以防有重复的名字存在导致被覆盖）
         String uuid = UUID.randomUUID().toString().replace("-", "");
-        newName = uuid + ext;
+        String newName = uuid + ext;
         //拼接图片上传的路径 url+图片名
         ApplicationHome applicationHome = new ApplicationHome(this.getClass());
         String pre = applicationHome.getDir().getParentFile().getParentFile().getAbsolutePath() + "\\src\\main\\resources\\static\\images\\";

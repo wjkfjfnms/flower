@@ -4,10 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-
 @Data
-public class AddGoodsDTO {
+public class UpdateGoodsDTO {
     /**
      * 商品id
      */
@@ -29,7 +27,7 @@ public class AddGoodsDTO {
     /**
      * 商品图片
      */
-    @ApiModelProperty(value="商品图片")
+    @ApiModelProperty(value="商品图片(不传这里)")
     private String picture;
 
     /**
@@ -45,22 +43,11 @@ public class AddGoodsDTO {
     @ApiModelProperty(value="商品价格")
     private Double price;
 
-    /**
-     * 售卖状态
-     */
-    @ApiModelProperty(value="售卖状态")
-    private String state;
 
 
-    /**
-     * 销量
-     */
-    @ApiModelProperty(value="销量")
-    private Double sales;
-
-    /**
-     * 图片
-     */
-    @ApiModelProperty(value="图片")
-    private MultipartFile file;
+//    /**
+//     * 图片
+//     */
+//    @ApiModelProperty(value="图片(传这里)")
+//    private MultipartFile file;
 }

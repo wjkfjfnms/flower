@@ -3,6 +3,7 @@ package com.example.flower.controller;
 
 import com.example.flower.dto.AddGoodsDTO;
 import com.example.flower.dto.StopSalesGoodsDTO;
+import com.example.flower.dto.UpdateGoodsDTO;
 import com.example.flower.po.Goods;
 import com.example.flower.service.GoodsService;
 import com.example.flower.vo.PagePara;
@@ -33,8 +34,8 @@ public class GoodsManageController {
 
     @ApiOperation(value = "修改商品信息")
     @PutMapping("/updateGoods")
-    public RE updateByPrimaryKey(@Validated @RequestBody Goods goods){
-        return goodsService.updateByPrimaryKeySelective(goods);
+    public RE updateByPrimaryKey(UpdateGoodsDTO updateGoodsDTO, MultipartFile file){
+        return goodsService.updateByPrimaryKeySelective(updateGoodsDTO,file);
     }
 
     @ApiOperation(value = "删除商品")
@@ -71,6 +72,12 @@ public class GoodsManageController {
     @PutMapping("/reSalesGoods")
     RE reSalesGoods(@Validated @RequestBody StopSalesGoodsDTO stopSalesGoodsDTO){
         return goodsService.reSalesGoods(stopSalesGoodsDTO);
+    }
+
+    @ApiOperation(value = "模糊查询商品")
+    @GetMapping("/findGoods")
+    public RE findGoods(String keyword, PagePara pagePara){
+        return goodsService.findGoods(keyword,pagePara);
     }
 
 }

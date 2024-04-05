@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.flower.dao.GoodsMapper;
 import com.example.flower.dto.AddGoodsDTO;
 import com.example.flower.dto.StopSalesGoodsDTO;
+import com.example.flower.dto.UpdateGoodsDTO;
 import com.example.flower.po.Goods;
 import com.example.flower.po.Type;
 import com.example.flower.service.GoodsService;
@@ -148,11 +149,12 @@ public class GoodsServoceImpl implements GoodsService {
 
 
     @Override
-    public RE updateByPrimaryKeySelective(Goods record) {
-        if (record != null) {
-            int re = goodsMapper.updateByPrimaryKeySelective(record);
+    public RE updateByPrimaryKeySelective(UpdateGoodsDTO updateGoodsDTO, MultipartFile file) {
+        if (updateGoodsDTO.getId() != null) {
+            updateGoodsDTO.setPicture(uploadImageService.upload(file).get("name"));
+            int re = goodsMapper.updateByPrimaryKeySelective(updateGoodsDTO);
             if (re != 0) {
-                Goods goods = goodsMapper.selectByPrimaryKey(record.getId());
+                Goods goods = goodsMapper.selectByPrimaryKey(updateGoodsDTO.getId());
                 return RE.ok().data("result", goods);
             } else {
                 return RE.error();
@@ -167,6 +169,24 @@ public class GoodsServoceImpl implements GoodsService {
     @Override
     public int updateByPrimaryKey(Goods record) {
         return goodsMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public RE findGoods(String keyword, PagePara pagePara) {
+        // 创建 Page 对象，指定当前页和每页显示数量
+        Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
+        IPage<Goods> queryResult =goodsMapper.findGoods(keyword,page, pagePara);
+        // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
+        PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
+        // 构建 PageResultS 对象，设置查询结果列表和分页信息
+        PageResultS<Goods> result = new PageResultS<>();
+        result.setList(queryResult.getRecords());
+        result.setPage(pageResult);
+        if (result != null){
+            return RE.ok().data("TypeList",result);
+        }else {
+            return RE.error();
+        }
     }
 
     @Override

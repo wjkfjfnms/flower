@@ -2,7 +2,10 @@ package com.example.flower.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.flower.dto.ChangeStateDTO;
+import com.example.flower.dto.SetDeliveryDTO;
 import com.example.flower.po.Order;
+import com.example.flower.vo.OrderVO;
 import com.example.flower.vo.PagePara;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
@@ -42,7 +45,7 @@ public interface OrderMapper {
      * @param id primary key
      * @return object by primary key
      */
-    Order selectByPrimaryKey(Long id);
+    OrderVO selectByPrimaryKey(Long id);
 
     Order selectByOrderNumber(String orderNumber);
 
@@ -54,9 +57,13 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     /**
-     * update record
+     * 设置派送员
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKey(Order record);
+    int updateByPrimaryKey(SetDeliveryDTO record);
+
+
+//    修改订单状态
+    int updateOrderState(ChangeStateDTO changeStateDTO);
 }

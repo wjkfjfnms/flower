@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.flower.dto.AddGoodsDTO;
 import com.example.flower.dto.StopSalesGoodsDTO;
+import com.example.flower.dto.UpdateGoodsDTO;
 import com.example.flower.po.Goods;
 import com.example.flower.vo.PagePara;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,6 +12,9 @@ import org.springframework.data.repository.query.Param;
 
 @Mapper
 public interface GoodsMapper {
+
+//    模糊查询
+    IPage<Goods> findGoods(String keyword,Page<PagePara> page, @Param("par")PagePara pagePara);
 
 //    停售
     int stopSalesGoods(StopSalesGoodsDTO stopSalesGoodsDTO);
@@ -55,7 +59,7 @@ public interface GoodsMapper {
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKeySelective(Goods record);
+    int updateByPrimaryKeySelective(UpdateGoodsDTO updateGoodsDTO);
 
     /**
      * update record

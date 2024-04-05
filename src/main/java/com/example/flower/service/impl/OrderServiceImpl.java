@@ -2,10 +2,15 @@ package com.example.flower.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.flower.po.Goods;
+import com.example.flower.dao.OrdergoodsMapper;
+import com.example.flower.dto.ChangeStateDTO;
+import com.example.flower.dto.CreateOrderDTO;
+import com.example.flower.dto.SetDeliveryDTO;
+import com.example.flower.po.Ordergoods;
 import com.example.flower.po.Users;
 import com.example.flower.service.CommonService;
 import com.example.flower.util.PageResultS;
+import com.example.flower.vo.OrderVO;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +19,9 @@ import javax.annotation.Resource;
 import com.example.flower.dao.OrderMapper;
 import com.example.flower.po.Order;
 import com.example.flower.service.OrderService;
+
+import java.util.concurrent.ThreadLocalRandom;
+
 @Service
 public class OrderServiceImpl implements OrderService{
 
@@ -22,6 +30,9 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private OrdergoodsMapper ordergoodsMapper;
 
     @Override
     public RE findUserOrder(PagePara pagePara) {
@@ -78,13 +89,42 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public int insertSelective(Order record) {
-        return orderMapper.insertSelective(record);
+    public RE insertSelective(CreateOrderDTO createOrderDTO) {
+//        获取参数
+        Order order = new Order();
+//        生成订单编号
+        StringBuilder randomNum = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            randomNum.append(ThreadLocalRandom.current().nextInt(10));
+        }
+        order.setOrdernumber(String.valueOf(randomNum)); //订单编号
+        order.setAddress(createOrderDTO.getAddress()); //收货地址
+        order.setPhone(createOrderDTO.getPhone()); //收货人电话
+        order.setUserid(commonService.getUsersDetails().getId()); //下单用户的id
+//        获取商品价格
+        double price = 0;
+        for (Ordergoods ordergoods : createOrderDTO.getOrderGoodsList()){
+            price += (ordergoods.getGoodsprice() * ordergoods.getGoodsnum());
+        }
+        order.setPrice(price); //订单总价
+        order.setState("已付款");
+        order.setOvertime(createOrderDTO.getOvertime()); //送达时间
+        if (orderMapper.insertSelective(order) != 0){
+//            订单商品表
+        for (Ordergoods ordergoods : createOrderDTO.getOrderGoodsList()){
+            ordergoods.setOrderid(order.getId());
+            ordergoodsMapper.insertSelective(ordergoods);
+        }
+//        删除购物车中的商品  TODO
+            OrderVO result = orderMapper.selectByPrimaryKey(createOrderDTO.getId());
+            return RE.ok().data("result",result);
+        }
+        return RE.error();
     }
 
     @Override
-    public Order selectByPrimaryKey(Long id) {
-        return orderMapper.selectByPrimaryKey(id);
+    public RE selectByPrimaryKey(Long id) {
+        return RE.ok().data("result",orderMapper.selectByPrimaryKey(id));
     }
 
     @Override
@@ -93,8 +133,21 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public int updateByPrimaryKey(Order record) {
-        return orderMapper.updateByPrimaryKey(record);
+    public RE updateByPrimaryKey(SetDeliveryDTO record) {
+        if (orderMapper.updateByPrimaryKey(record) != 0){
+            OrderVO order = orderMapper.selectByPrimaryKey(record.getId());
+            return RE.ok().data("result",order);
+        }
+        return RE.error();
+    }
+
+    @Override
+    public RE updateOrderState(ChangeStateDTO changeStateDTO) {
+        if (orderMapper.updateOrderState(changeStateDTO) != 0){
+            OrderVO order = orderMapper.selectByPrimaryKey(changeStateDTO.getId());
+            return RE.ok().data("result",order);
+        }
+        return RE.error();
     }
 
 }
