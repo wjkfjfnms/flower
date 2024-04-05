@@ -29,8 +29,8 @@ public class OrderController {
 
     @ApiOperation(value = "分页查询订单（用户）")
     @GetMapping("/findUserOrder")
-    RE findUserOrder(PagePara pagePara){
-        return orderService.findUserOrder(pagePara);
+    RE findUserOrder(String keyword,PagePara pagePara){
+        return orderService.findUserOrder(keyword,pagePara);
     }
 
 

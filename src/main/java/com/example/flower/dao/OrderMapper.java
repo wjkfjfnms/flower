@@ -47,7 +47,7 @@ public interface OrderMapper {
      */
     OrderVO selectByPrimaryKey(Long id);
 
-    Order selectByOrderNumber(String orderNumber);
+    IPage<Order> selectByOrderNumber(String orderNumber,Page<PagePara> page, @Param("par")PagePara pagePara);
 
     /**
      * update record selective

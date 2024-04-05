@@ -9,7 +9,7 @@ import com.example.flower.vo.RE;
 
 public interface OrderService{
 
-    RE findUserOrder(PagePara pagePara);
+    RE findUserOrder(String keyword,PagePara pagePara);
 
     RE findAllOrder(String orderNumber,PagePara pagePara);
 
