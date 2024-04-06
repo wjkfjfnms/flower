@@ -92,7 +92,7 @@
   </insert>
 
 <!--修改购物车商品信息-->
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.flower.po.Cart">
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.flower.po.Cart" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
     <!--@mbg.generated-->
     update cart
     <set>
@@ -100,7 +100,7 @@
         goodsId = #{goodsid,jdbcType=BIGINT},
       </if>
       <if test="number != null">
-        `number` = #{number,jdbcType=INTEGER},
+        number = #{number,jdbcType=INTEGER},
       </if>
       <if test="pricetotal != null">
         pricetotal = #{pricetotal,jdbcType=DOUBLE},

@@ -12,6 +12,7 @@ import com.example.flower.po.Goods;
 import com.example.flower.po.Type;
 import com.example.flower.service.GoodsService;
 import com.example.flower.util.PageResultS;
+import com.example.flower.vo.GoodsVO;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class GoodsServoceImpl implements GoodsService {
     public RE stopSalesGoods(StopSalesGoodsDTO stopSalesGoodsDTO) {
         stopSalesGoodsDTO.setState("停售");
         if (goodsMapper.stopSalesGoods(stopSalesGoodsDTO) != 0) {
-            Goods goods = goodsMapper.selectByPrimaryKey(stopSalesGoodsDTO.getId());
+            GoodsVO goods = goodsMapper.selectByPrimaryKey(stopSalesGoodsDTO.getId());
             return RE.ok().data("result", goods);
         }
         return RE.error();
@@ -48,7 +49,7 @@ public class GoodsServoceImpl implements GoodsService {
     public RE reSalesGoods(StopSalesGoodsDTO stopSalesGoodsDTO) {
         stopSalesGoodsDTO.setState("在售");
         if (goodsMapper.stopSalesGoods(stopSalesGoodsDTO) != 0) {
-            Goods goods = goodsMapper.selectByPrimaryKey(stopSalesGoodsDTO.getId());
+            GoodsVO goods = goodsMapper.selectByPrimaryKey(stopSalesGoodsDTO.getId());
             return RE.ok().data("result", goods);
         }
         return RE.error();
@@ -58,11 +59,11 @@ public class GoodsServoceImpl implements GoodsService {
     public RE selectByType(Long typeId, PagePara pagePara) {
         // 创建 Page 对象，指定当前页和每页显示数量
         Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-        IPage<Goods> queryResult = goodsMapper.selectByType(typeId, page, pagePara);
+        IPage<GoodsVO> queryResult = goodsMapper.selectByType(typeId, page, pagePara);
         // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
         PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
         // 构建 PageResultS 对象，设置查询结果列表和分页信息
-        PageResultS<Goods> result = new PageResultS<>();
+        PageResultS<GoodsVO> result = new PageResultS<>();
         result.setList(queryResult.getRecords());
         result.setPage(pageResult);
         if (result != null) {
@@ -78,11 +79,11 @@ public class GoodsServoceImpl implements GoodsService {
 //            查询某个商品
             // 创建 Page 对象，指定当前页和每页显示数量
             Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-            IPage<Goods> queryResult = goodsMapper.selectByGoodsName(goodsName,page, pagePara);
+            IPage<GoodsVO> queryResult = goodsMapper.selectByGoodsName(goodsName,page, pagePara);
             // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
             PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
             // 构建 PageResultS 对象，设置查询结果列表和分页信息
-            PageResultS<Goods> result = new PageResultS<>();
+            PageResultS<GoodsVO> result = new PageResultS<>();
             result.setList(queryResult.getRecords());
             result.setPage(pageResult);
             if (result != null) {
@@ -93,11 +94,11 @@ public class GoodsServoceImpl implements GoodsService {
         } else {
             // 创建 Page 对象，指定当前页和每页显示数量
             Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-            IPage<Goods> queryResult = goodsMapper.findAllGoodsByPage(page, pagePara);
+            IPage<GoodsVO> queryResult = goodsMapper.findAllGoodsByPage(page, pagePara);
             // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
             PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
             // 构建 PageResultS 对象，设置查询结果列表和分页信息
-            PageResultS<Goods> result = new PageResultS<>();
+            PageResultS<GoodsVO> result = new PageResultS<>();
             result.setList(queryResult.getRecords());
             result.setPage(pageResult);
             if (result != null) {
@@ -140,7 +141,7 @@ public class GoodsServoceImpl implements GoodsService {
             addGoodsDTO.setState("在售");
             int re = goodsMapper.insertSelective(addGoodsDTO);
             if (re != 0) {
-                Goods result = goodsMapper.selectByPrimaryKey(addGoodsDTO.getId());
+                GoodsVO result = goodsMapper.selectByPrimaryKey(addGoodsDTO.getId());
                 return RE.ok().data("goods", result);
             } else {
                 return RE.error();
@@ -153,7 +154,7 @@ public class GoodsServoceImpl implements GoodsService {
 
     @Override
     public RE selectByPrimaryKey(Long id) {
-        Goods goods = goodsMapper.selectByPrimaryKey(id);
+        GoodsVO goods = goodsMapper.selectByPrimaryKey(id);
         if (goods != null) {
             return RE.ok().data("result", goods);
         }
@@ -167,7 +168,7 @@ public class GoodsServoceImpl implements GoodsService {
             updateGoodsDTO.setPicture(uploadImageService.upload(file).get("name"));
             int re = goodsMapper.updateByPrimaryKeySelective(updateGoodsDTO);
             if (re != 0) {
-                Goods goods = goodsMapper.selectByPrimaryKey(updateGoodsDTO.getId());
+                GoodsVO goods = goodsMapper.selectByPrimaryKey(updateGoodsDTO.getId());
                 return RE.ok().data("result", goods);
             } else {
                 return RE.error();
@@ -188,11 +189,11 @@ public class GoodsServoceImpl implements GoodsService {
     public RE findGoods(String keyword, PagePara pagePara) {
         // 创建 Page 对象，指定当前页和每页显示数量
         Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-        IPage<Goods> queryResult =goodsMapper.findGoods(keyword,page, pagePara);
+        IPage<GoodsVO> queryResult =goodsMapper.findGoods(keyword,page, pagePara);
         // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
         PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
         // 构建 PageResultS 对象，设置查询结果列表和分页信息
-        PageResultS<Goods> result = new PageResultS<>();
+        PageResultS<GoodsVO> result = new PageResultS<>();
         result.setList(queryResult.getRecords());
         result.setPage(pageResult);
         if (result != null){

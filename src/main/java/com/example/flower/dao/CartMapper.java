@@ -43,10 +43,10 @@ public interface CartMapper {
 
     /**
      * update record selective
-     * @param record the updated record
+     * @param cart the updated record
      * @return update count
      */
-    int updateByPrimaryKeySelective(Cart record);
+    int updateByPrimaryKeySelective(Cart cart);
 
     /**
      * update record

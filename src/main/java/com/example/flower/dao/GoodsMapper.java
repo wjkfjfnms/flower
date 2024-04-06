@@ -6,6 +6,7 @@ import com.example.flower.dto.AddGoodsDTO;
 import com.example.flower.dto.StopSalesGoodsDTO;
 import com.example.flower.dto.UpdateGoodsDTO;
 import com.example.flower.po.Goods;
+import com.example.flower.vo.GoodsVO;
 import com.example.flower.vo.PagePara;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
@@ -14,17 +15,17 @@ import org.springframework.data.repository.query.Param;
 public interface GoodsMapper {
 
 //    模糊查询
-    IPage<Goods> findGoods(String keyword,Page<PagePara> page, @Param("par")PagePara pagePara);
+    IPage<GoodsVO> findGoods(String keyword, Page<PagePara> page, @Param("par")PagePara pagePara);
 
 //    停售
     int stopSalesGoods(StopSalesGoodsDTO stopSalesGoodsDTO);
 
-    IPage<Goods> selectByType(Long typeId,Page<PagePara> page, @Param("par")PagePara pagePara);
+    IPage<GoodsVO> selectByType(Long typeId,Page<PagePara> page, @Param("par")PagePara pagePara);
 
-    IPage<Goods> selectByGoodsName(String goodsName,Page<PagePara> page, @Param("par")PagePara pagePara);
+    IPage<GoodsVO> selectByGoodsName(String goodsName,Page<PagePara> page, @Param("par")PagePara pagePara);
 
 
-    IPage<Goods> findAllGoodsByPage(Page<PagePara> page, @Param("par")PagePara pagePara);
+    IPage<GoodsVO> findAllGoodsByPage(Page<PagePara> page, @Param("par")PagePara pagePara);
 
     /**
      * delete by primary key
@@ -52,7 +53,7 @@ public interface GoodsMapper {
      * @param id primary key
      * @return object by primary key
      */
-    Goods selectByPrimaryKey(Long id);
+    GoodsVO selectByPrimaryKey(Long id);
 
     /**
      * update record selective

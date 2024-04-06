@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.flower.dao.GoodsMapper">
-  <resultMap id="BaseResultMap" type="com.example.flower.po.Goods">
+  <resultMap id="BaseResultMap" type="com.example.flower.vo.GoodsVO">
     <!--@mbg.generated-->
     <!--@Table goods-->
     <id column="id" jdbcType="BIGINT" property="id" />
@@ -9,6 +9,7 @@
     <result column="inventory" jdbcType="INTEGER" property="inventory" />
     <result column="picture" jdbcType="VARCHAR" property="picture" />
     <result column="typeId" jdbcType="BIGINT" property="typeid" />
+    <result column="typeName" jdbcType="VARCHAR" property="typename" />
     <result column="price" jdbcType="FLOAT" property="price" />
     <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="createtimes" jdbcType="TIMESTAMP" property="createtimes" />
@@ -20,30 +21,33 @@
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select
-    <include refid="Base_Column_List" />
-    from goods
-    where id = #{id,jdbcType=BIGINT}
+    select g.id, g.goodsName, g.inventory, g.picture, t.typeName, g.price, g.state, g.createtimes, g.sales
+    from goods g
+    join type  t on g.typeId = t.id
+    where g.id = #{id,jdbcType=BIGINT}
   </select>
 
 <!--  分页查询全部商品-->
   <select id="findAllGoodsByPage" resultMap="BaseResultMap">
-    select *
-    from goods
+    select g.id, g.goodsName, g.inventory, g.picture, t.typeName, g.price, g.state, g.createtimes, g.sales
+    from goods g
+    join type  t on g.typeId = t.id
   </select>
 
   <select id="selectByGoodsName" parameterType="String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select *
-    from goods
-    where goodsName like CONCAT('%', #{arg0}, '%')
+    select g.id, g.goodsName, g.inventory, g.picture, t.typeName, g.price, g.state, g.createtimes, g.sales
+    from goods g
+    join type  t on g.typeId = t.id
+    where g.goodsName like CONCAT('%', #{arg0}, '%')
   </select>
 
   <select id="selectByType" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select *
-    from goods
-    where typeId = #{arg0,jdbcType=BIGINT}
-    order by sales desc
+    select g.id, g.goodsName, g.inventory, g.picture, t.typeName, g.price, g.state, g.createtimes, g.sales
+    from goods g
+    join type  t on g.typeId = t.id
+    where g.typeId = #{arg0,jdbcType=BIGINT}
+    order by g.sales desc
   </select>
 
 <!--  删除商品-->
@@ -164,9 +168,10 @@
 
 <!--  模糊查询商品-->
   <select id="findGoods" parameterType="string" resultMap="BaseResultMap">
-    select *
-    from goods
-    where goodsName like CONCAT('%', #{arg0}, '%') and state = '在售'
+    select g.id, g.goodsName, g.inventory, g.picture, t.typeName, g.price, g.state, g.createtimes, g.sales
+    from goods g
+    join type  t on g.typeId = t.id
+    where g.goodsName like CONCAT('%', #{arg0}, '%') and state = '在售'
   </select>
 
 </mapper>

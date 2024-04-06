@@ -10,6 +10,7 @@ import com.example.flower.po.Order;
 import com.example.flower.service.CommonService;
 import com.example.flower.util.PageResultS;
 import com.example.flower.vo.CartVO;
+import com.example.flower.vo.GoodsVO;
 import com.example.flower.vo.PagePara;
 import com.example.flower.vo.RE;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class CartServiceImpl implements CartService{
     @Override
     public RE insertSelective(AddCart addCart) {
 //        获取参数
-        Goods goods = goodsMapper.selectByPrimaryKey(addCart.getGoodsid());
+        GoodsVO goods = goodsMapper.selectByPrimaryKey(addCart.getGoodsid());
         Cart cart = new Cart();
         cart.setGoodsid(addCart.getGoodsid());
         cart.setNumber(addCart.getNumber());
@@ -95,10 +96,12 @@ public class CartServiceImpl implements CartService{
         Long goodsid = cartMapper.selectByPrimaryKey(updateCartDTO.getId()).getGoodsid();
         Double price = goodsMapper.selectByPrimaryKey(goodsid).getPrice();
         Cart cart=new Cart();
+        cart.setId(updateCartDTO.getId());
         cart.setNumber(updateCartDTO.getNumber());
         cart.setPricetotal(price * updateCartDTO.getNumber());
         if (cartMapper.updateByPrimaryKeySelective(cart) != 0){
-            return RE.ok();
+            Cart result =  cartMapper.selectByPrimaryKey(cart.getId());
+            return RE.ok().data("result",result);
         }else {
             return RE.error();
         }
