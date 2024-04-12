@@ -27,6 +27,8 @@ public interface GoodsMapper {
 
     IPage<GoodsVO> findAllGoodsByPage(Page<PagePara> page, @Param("par")PagePara pagePara);
 
+    IPage<GoodsVO> userFindAllGoods(Page<PagePara> page, @Param("par")PagePara pagePara);
+
     /**
      * delete by primary key
      * @param id primaryKey

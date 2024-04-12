@@ -27,11 +27,19 @@
     where g.id = #{id,jdbcType=BIGINT}
   </select>
 
-<!--  分页查询全部商品-->
+<!--  分页查询全部商品(商家)-->
   <select id="findAllGoodsByPage" resultMap="BaseResultMap">
     select g.id, g.goodsName, g.inventory, g.picture, t.typeName, g.price, g.state, g.createtimes, g.sales
     from goods g
     join type  t on g.typeId = t.id
+  </select>
+
+<!-- 分页查询全部商品(用户) -->
+  <select id="userFindAllGoods" resultMap="BaseResultMap">
+    select g.id, g.goodsName, g.inventory, g.picture, t.typeName, g.price, g.state, g.createtimes, g.sales
+    from goods g
+    join type  t on g.typeId = t.id
+    where state = '在售'
   </select>
 
   <select id="selectByGoodsName" parameterType="String" resultMap="BaseResultMap">

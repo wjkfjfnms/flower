@@ -44,10 +44,16 @@ public class GoodsManageController {
         return goodsService.deleteByPrimaryKey(id);
     }
 
-    @ApiOperation(value = "分页查询全部商品")
+    @ApiOperation(value = "分页查询全部商品(商家)")
     @GetMapping("/selectAllGoods")
     public RE selectAllGoods(String goodsName,PagePara pagePara){
         return goodsService.findAllGoods(goodsName,pagePara);
+    }
+
+    @ApiOperation(value = "分页查询全部商品（用户）")
+    @GetMapping("/userFindAllGoods")
+    public RE userFindAllGoods(PagePara pagePara){
+        return goodsService.userFindAllGoods(pagePara);
     }
 
     @ApiOperation(value = "查询某个商品信息")

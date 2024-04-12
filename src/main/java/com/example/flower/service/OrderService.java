@@ -18,7 +18,7 @@ public interface OrderService{
     int insert(Order record);
 
 // 创建订单
-    RE insertSelective(CreateOrderDTO record);
+    RE insertSelective(CreateOrderDTO createOrderDTO);
 
     RE selectByPrimaryKey(Long id);
 

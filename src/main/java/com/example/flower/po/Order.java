@@ -35,6 +35,11 @@ public class Order {
     @ApiModelProperty(value="所属用户")
     private Long userid;
 
+    @ApiModelProperty(value="用户名字")
+    private String nickname;
+
+    @ApiModelProperty(value="收货人名字")
+    private String name;
     /**
     * 电话
     */

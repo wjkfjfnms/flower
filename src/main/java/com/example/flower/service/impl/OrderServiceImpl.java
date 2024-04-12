@@ -2,6 +2,7 @@ package com.example.flower.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.flower.dao.CartMapper;
 import com.example.flower.dao.OrdergoodsMapper;
 import com.example.flower.dto.ChangeStateDTO;
 import com.example.flower.dto.CreateOrderDTO;
@@ -34,12 +35,17 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private OrdergoodsMapper ordergoodsMapper;
 
+    @Autowired
+    private CartMapper cartMapper;
+
     @Override
     public RE findUserOrder(String keyword,PagePara pagePara) {
-        if (keyword != null || !keyword.equals("")){
+        if (keyword == null || keyword.equals("")){
+            //        获取用户id
+            Users users = commonService.getUsersDetails();
             // 创建 Page 对象，指定当前页和每页显示数量
             Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-            IPage<Order> queryResult =orderMapper.selectByOrderNumber(keyword,page, pagePara);
+            IPage<Order> queryResult =orderMapper.findUserOrder(users.getId(),page, pagePara);
             // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
             PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
             // 构建 PageResultS 对象，设置查询结果列表和分页信息
@@ -52,11 +58,10 @@ public class OrderServiceImpl implements OrderService{
                 return RE.error();
             }
         }
-//        获取用户id
-        Users users = commonService.getUsersDetails();
+
         // 创建 Page 对象，指定当前页和每页显示数量
         Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
-        IPage<Order> queryResult =orderMapper.findUserOrder(users.getId(),page, pagePara);
+        IPage<Order> queryResult =orderMapper.selectByOrderNumber(keyword,page, pagePara);
         // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
         PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
         // 构建 PageResultS 对象，设置查询结果列表和分页信息
@@ -68,6 +73,7 @@ public class OrderServiceImpl implements OrderService{
         }else {
             return RE.error();
         }
+
     }
 
     @Override
@@ -138,14 +144,16 @@ public class OrderServiceImpl implements OrderService{
         order.setPrice(price); //订单总价
         order.setState("已付款");
         order.setOvertime(createOrderDTO.getOvertime()); //送达时间
+        order.setName(createOrderDTO.getName());
         if (orderMapper.insertSelective(order) != 0){
 //            订单商品表
         for (Ordergoods ordergoods : createOrderDTO.getOrderGoodsList()){
             ordergoods.setOrderid(order.getId());
             ordergoodsMapper.insertSelective(ordergoods);
         }
-//        删除购物车中的商品  TODO
-            OrderVO result = orderMapper.selectByPrimaryKey(createOrderDTO.getId());
+//        删除购物车中的商品
+            cartMapper.deleteByPrimaryKey(createOrderDTO.getId());
+            OrderVO result = orderMapper.selectByPrimaryKey(order.getId());
             return RE.ok().data("result",result);
         }
         return RE.error();

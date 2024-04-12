@@ -26,6 +26,8 @@ public interface GoodsService extends IService<Goods> {
 
     RE findAllGoods(String goodsName,PagePara pagePara);
 
+    RE userFindAllGoods(PagePara pagePara);
+
     public RE deleteByPrimaryKey(Long id);
 
 

@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -36,19 +37,19 @@ public class OrderController {
 
     @ApiOperation(value = "为订单分配派送员（商家）")
     @PutMapping("/updateByPrimaryKey")
-    public RE updateByPrimaryKey(SetDeliveryDTO record){
+    public RE updateByPrimaryKey(@Validated @RequestBody SetDeliveryDTO record){
         return orderService.updateByPrimaryKey(record);
     }
 
     @ApiOperation(value = "创建订单（用户）")
     @PostMapping("/insertSelective")
-    public RE insertSelective(CreateOrderDTO record){
-        return orderService.insertSelective(record);
+    public RE insertSelective(@Validated @RequestBody CreateOrderDTO createOrderDTO){
+        return orderService.insertSelective(createOrderDTO);
     }
 
     @ApiOperation(value = "修改订单状态（用户and商家）")
     @PostMapping("/updateOrderState")
-    public RE updateOrderState(ChangeStateDTO changeStateDTO){
+    public RE updateOrderState(@Validated @RequestBody ChangeStateDTO changeStateDTO){
         return orderService.updateOrderState(changeStateDTO);
     }
 

@@ -8,6 +8,7 @@
     <result column="orderNumber" jdbcType="VARCHAR" property="ordernumber" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="userId" jdbcType="BIGINT" property="userid" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="price" jdbcType="FLOAT" property="price" />
@@ -26,6 +27,8 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="orderNumber" jdbcType="VARCHAR" property="orderNumber" />
     <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="price" jdbcType="FLOAT" property="price" />
@@ -35,8 +38,8 @@
     <result column="deliveryPeoplePhone" jdbcType="VARCHAR" property="deliveryPeoplePhone" />
     <collection property="ordergoodsList" ofType="com.example.flower.po.Ordergoods">
       <result column="goodsName" jdbcType="VARCHAR" property="goodsName" />
-      <result column="goodsnum" jdbcType="VARCHAR" property="goodsnum" />
-      <result column="goodsprice" jdbcType="VARCHAR" property="goodsprice" />
+      <result column="goodsNum" jdbcType="VARCHAR" property="goodsnum" />
+      <result column="goodsPrice" jdbcType="VARCHAR" property="goodsprice" />
     </collection>
   </resultMap>
 
@@ -44,34 +47,41 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="orderMap">
     <!--@mbg.generated-->
     select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,o.deliveryPeopleName,o.deliveryPeoplePhone,
-    o.name,og.goodsName,goodsNum,og.goodsPrice
-    from order o
+    o.name,og.goodsName,og.goodsNum,og.goodsPrice,u.nickname
+    from `order` o
     join ordergoods og on o.id = og.orderId
-    where id = #{id,jdbcType=BIGINT}
+    join `users` u on u.id = o.userId
+    where o.id = #{arg0,jdbcType=BIGINT}
   </select>
 
 <!--  商家分页查询所有订单-->
   <select id="findAllOrder" resultMap="BaseResultMap">
     select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,o.deliveryPeopleName,o.deliveryPeoplePhone,
-           o.name,og.goodsName,goodsNum,og.goodsPrice
-    from order o
+           o.name,og.goodsName,goodsNum,og.goodsPrice,u.nickname
+    from `order` o
     join ordergoods og on o.id = og.orderId
+    join `users` u on u.id = o.userId
     order by createtime desc
   </select>
 
   <!--  分页查询用户所有订单-->
   <select id="findUserOrder" resultMap="BaseResultMap" parameterType="long">
-    select *
-    from `order`
-    where userId = #{userid,jdbcType=BIGINT}
+    select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,o.deliveryPeopleName,o.deliveryPeoplePhone,
+           o.name,og.goodsName,goodsNum,og.goodsPrice,u.nickname
+    from `order` o
+           join ordergoods og on o.id = og.orderId
+           join `users` u on u.id = o.userId
+    where userId = #{arg0,jdbcType=BIGINT}
     order by createtime desc
   </select>
 
   <select id="selectByOrderNumber" parameterType="String" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select
-    <include refid="Base_Column_List" />
-    from order
+    select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,o.deliveryPeopleName,o.deliveryPeoplePhone,
+    o.name,og.goodsName,goodsNum,og.goodsPrice,u.nickname
+    from `order` o
+    join ordergoods og on o.id = og.orderId
+    join `users` u on u.id = o.userId
     where orderNumber like CONCAT('%', #{arg0}, '%')
   </select>
 
@@ -110,6 +120,9 @@
       <if test="userid != null">
         userId,
       </if>
+      <if test="name != null">
+        name,
+      </if>
       <if test="phone != null">
         phone,
       </if>
@@ -135,6 +148,9 @@
       </if>
       <if test="userid != null">
         #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},

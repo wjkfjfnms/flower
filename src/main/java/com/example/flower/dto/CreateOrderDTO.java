@@ -15,6 +15,8 @@ public class CreateOrderDTO {
     @ApiModelProperty(value="订单id")
     private Long id;
 
+    @ApiModelProperty(value="收货人名字")
+    private String name;
 
 
     /**
