@@ -54,25 +54,25 @@ public class OrderController {
     }
 
     @ApiOperation(value = "派送员查看自己的待配送订单")
-    @PostMapping("/findNoPaiOrder")
+    @GetMapping("/findNoPaiOrder")
     public RE findNoPaiOrder(PagePara pagePara){
         return orderService.findNoPaiOrder(pagePara);
     }
 
     @ApiOperation(value = "派送员查看自己的配送中订单")
-    @PostMapping("/findPaingOrder")
+    @GetMapping("/findPaingOrder")
     public RE findPaingOrder(PagePara pagePara){
         return orderService.findPaingOrder(pagePara);
     }
 
     @ApiOperation(value = "派送员查看自己的全部订单")
-    @PostMapping("/findAllPaiOrder")
+    @GetMapping("/findAllPaiOrder")
     public RE findAllPaiOrder(PagePara pagePara){
         return orderService.findAllPaiOrder(pagePara);
     }
 
     @ApiOperation(value = "派送员查看自己的已送达的订单")
-    @PostMapping("/{{ ruleForm1.createTime }}")
+    @GetMapping("/findPaiedOrder")
     public RE findPaiedOrder(PagePara pagePara){
         return orderService.findPaiedOrder(pagePara);
     }
