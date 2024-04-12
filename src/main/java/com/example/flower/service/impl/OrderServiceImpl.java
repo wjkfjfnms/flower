@@ -187,4 +187,84 @@ public class OrderServiceImpl implements OrderService{
         return RE.error();
     }
 
+    @Override
+    public RE findNoPaiOrder(PagePara pagePara) {
+//        获取当前登录用户id
+        Long id = commonService.getUsersDetails().getId();
+        // 创建 Page 对象，指定当前页和每页显示数量
+        Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
+        IPage<Order> queryResult =orderMapper.findNoPaiOrder(id,page, pagePara);
+        // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
+        PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
+        // 构建 PageResultS 对象，设置查询结果列表和分页信息
+        PageResultS<Order> result = new PageResultS<>();
+        result.setList(queryResult.getRecords());
+        result.setPage(pageResult);
+        if (result != null){
+            return RE.ok().data("OrderList",result);
+        }else {
+            return RE.error();
+        }
+    }
+
+    @Override
+    public RE findPaingOrder(PagePara pagePara) {
+        //        获取当前登录用户id
+        Long id = commonService.getUsersDetails().getId();
+        // 创建 Page 对象，指定当前页和每页显示数量
+        Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
+        IPage<Order> queryResult =orderMapper.findPaingOrder(id,page, pagePara);
+        // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
+        PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
+        // 构建 PageResultS 对象，设置查询结果列表和分页信息
+        PageResultS<Order> result = new PageResultS<>();
+        result.setList(queryResult.getRecords());
+        result.setPage(pageResult);
+        if (result != null){
+            return RE.ok().data("OrderList",result);
+        }else {
+            return RE.error();
+        }
+    }
+
+    @Override
+    public RE findAllPaiOrder(PagePara pagePara) {
+        //        获取当前登录用户id
+        Long id = commonService.getUsersDetails().getId();
+        // 创建 Page 对象，指定当前页和每页显示数量
+        Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
+        IPage<Order> queryResult =orderMapper.findAllPaiOrder(id,page, pagePara);
+        // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
+        PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
+        // 构建 PageResultS 对象，设置查询结果列表和分页信息
+        PageResultS<Order> result = new PageResultS<>();
+        result.setList(queryResult.getRecords());
+        result.setPage(pageResult);
+        if (result != null){
+            return RE.ok().data("OrderList",result);
+        }else {
+            return RE.error();
+        }
+    }
+
+    @Override
+    public RE findPaiedOrder(PagePara pagePara) {
+        //        获取当前登录用户id
+        Long id = commonService.getUsersDetails().getId();
+        // 创建 Page 对象，指定当前页和每页显示数量
+        Page<PagePara> page = new Page<>(pagePara.getNowPage() == null ? 1 : pagePara.getNowPage(), pagePara.getOnePageCount() == null ? 3 : pagePara.getOnePageCount());
+        IPage<Order> queryResult =orderMapper.findPaiedOrder(id,page, pagePara);
+        // 根据查询结果构建 PagePara 对象，包括当前页、每页数量、总记录数和总页数
+        PagePara pageResult = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
+        // 构建 PageResultS 对象，设置查询结果列表和分页信息
+        PageResultS<Order> result = new PageResultS<>();
+        result.setList(queryResult.getRecords());
+        result.setPage(pageResult);
+        if (result != null){
+            return RE.ok().data("OrderList",result);
+        }else {
+            return RE.error();
+        }
+    }
+
 }

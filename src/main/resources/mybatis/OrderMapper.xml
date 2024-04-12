@@ -214,4 +214,43 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
+  <select id="findNoPaiOrder" resultMap="BaseResultMap">
+    select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,
+    o.name,og.goodsName,goodsNum,og.goodsPrice,u.nickname
+    from `order` o
+    join ordergoods og on o.id = og.orderId
+    join `users` u on u.id = o.userId
+    where o.deliveryPeopleId = #{arg0,jdbcType=BIGINT} and o.state = '等待派送'
+    order by createtime desc
+    </select>
+
+  <select id="findPaingOrder" resultMap="BaseResultMap">
+    select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,
+    o.name,og.goodsName,goodsNum,og.goodsPrice,u.nickname
+    from `order` o
+    join ordergoods og on o.id = og.orderId
+    join `users` u on u.id = o.userId
+    where o.deliveryPeopleId = #{arg0,jdbcType=BIGINT} and o.state = '派送中'
+    order by createtime desc
+  </select>
+
+  <select id="findAllPaiOrder" resultMap="BaseResultMap">
+    select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,
+    o.name,og.goodsName,goodsNum,og.goodsPrice,u.nickname
+    from `order` o
+    join ordergoods og on o.id = og.orderId
+    join `users` u on u.id = o.userId
+    where o.deliveryPeopleId = #{arg0,jdbcType=BIGINT}
+    order by createtime desc
+  </select>
+
+  <select id="findPaiedOrder" resultMap="BaseResultMap">
+    select o.id,o.orderNumber,o.state,o.price,o.address,o.phone,o.createtime,o.overtime,
+    o.name,og.goodsName,goodsNum,og.goodsPrice,u.nickname
+    from `order` o
+    join ordergoods og on o.id = og.orderId
+    join `users` u on u.id = o.userId
+    where o.deliveryPeopleId = #{arg0,jdbcType=BIGINT} and o.state = '已送达'
+    order by createtime desc
+  </select>
 </mapper>

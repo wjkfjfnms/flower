@@ -66,4 +66,14 @@ public interface OrderMapper {
 
 //    修改订单状态
     int updateOrderState(ChangeStateDTO changeStateDTO);
+
+    //    派送员查看自己的待配送订单
+    IPage<Order> findNoPaiOrder(Long id,Page<PagePara> page, @Param("par")PagePara pagePara);
+//    派送员查看自己的配送中订单
+    IPage<Order> findPaingOrder(Long id,Page<PagePara> page, @Param("par")PagePara pagePara);
+//    派送员查看自己的全部订单（按时间顺序倒序输出）
+    IPage<Order> findAllPaiOrder(Long id,Page<PagePara> page, @Param("par")PagePara pagePara);
+//
+    IPage<Order> findPaiedOrder(Long id,Page<PagePara> page, @Param("par")PagePara pagePara);
+
 }

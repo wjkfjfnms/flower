@@ -30,4 +30,15 @@ public interface OrderService{
 //    修改订单状态
     RE updateOrderState(ChangeStateDTO changeStateDTO);
 
+//    派送员查看自己的待配送订单
+    RE findNoPaiOrder(PagePara pagePara);
+
+//    派送员查看自己的配送中订单
+    RE findPaingOrder(PagePara pagePara);
+
+//    派送员查看自己的全部订单（按时间顺序倒序输出）
+    RE findAllPaiOrder(PagePara pagePara);
+
+//    派送员查看自己的已送达的订单
+    RE findPaiedOrder(PagePara pagePara);
 }
